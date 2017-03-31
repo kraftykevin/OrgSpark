@@ -21,3 +21,10 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+#Logged in and there is logout link
+def signedin (request):
+    if request.user.is_authenticated:  # Do something for authenticated users.
+        ...
+    else: # Do something for anonymous users.
+        ...
