@@ -3,5 +3,18 @@
 {% block content %}
 
 <a href="/story1read">Read the story so far....</a>
+<p>________________________________________________________</p>
+<p>Write what goes next.</p>
+
+{% for suba in suba1 %}
+    <div>
+      <p>________________________________________________________</p>
+        <p>Vote: {{ suba.vote }}</p>
+        <p>Author: {{ suba.author }}</p>
+        <p>Submission: {{ suba.text }}</p>
+
+    </div>
+{% endfor %}
+
 
 {% endblock %}

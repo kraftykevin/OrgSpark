@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^story1/$', views.story1contrib, name='story1'),
     url(r'^story1read/$', views.story1read, name='story1read'),
+    url(r'^submit/$', views.post_new, name='post_new'),
 ]
