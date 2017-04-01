@@ -1,0 +1,11 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+{% for texta in story1 %}
+    <div>
+        <p>{{ texta.text|linebreaksbr }}</p>
+    </div>
+{% endfor %}
+
+{% endblock %}

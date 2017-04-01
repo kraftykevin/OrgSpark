@@ -1,3 +1,8 @@
 from django.db import models
 
 # Create your models here.
+
+class Texta(models.Model):
+    author = models.ForeignKey('auth.User')
+    text = models.CharField(max_length=250)
+    # use pk value for num added
