@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .models import Texta, Suba
-from .forms import PostForm
+from .forms import SubaForm
 
 
 # home goes to the home page
@@ -32,14 +32,17 @@ def story1contrib(request):
     suba1 = Suba.objects.order_by('vote').reverse()
     return render(request, 'project/story1.html', {'suba1':suba1})
 
-def post_new(request):
+
+
+
+def addsuba(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = SubaForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)   #so do I need to switch out to suba? or is it post
+            post = form.save(commit=False)
             post.author = request.user
             post.vote = 0
-            return redirect('post_detail', pk=suba.pk) #suba or post here???? 
+            post.save()
     else:
-        form = PostForm()
-    return render(request, 'project/submit.html', {'form': form})
+        form = SubaForm()
+    return render(request, 'project/submittest.html', {'form': form})
