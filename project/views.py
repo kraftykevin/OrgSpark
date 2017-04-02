@@ -28,14 +28,12 @@ def story1read(request):
     story1 = Texta.objects.order_by('pk')
     return render(request, 'project/story1read.html', {'story1': story1})
 
+
 def story1contrib(request):
     suba1 = Suba.objects.order_by('vote').reverse()
     return render(request, 'project/story1.html', {'suba1':suba1})
 
-
-
-
-def addsuba(request):
+def story1submit(request):
     if request.method == "POST":
         form = SubaForm(request.POST)
         if form.is_valid():
@@ -43,6 +41,7 @@ def addsuba(request):
             post.author = request.user
             post.vote = 0
             post.save()
+        return redirect('story1')
     else:
         form = SubaForm()
-    return render(request, 'project/submittest.html', {'form': form})
+    return render(request, 'project/story1submit.html', {'form': form})
