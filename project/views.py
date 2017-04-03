@@ -10,6 +10,9 @@ from .forms import SubaForm
 def home(request):
     return render(request, 'project/home.html', {})
 
+def nicetry(request):
+    return render(request, 'project/nicetry.html', {})
+
 def already(request):
     return render(request, 'project/already.html', {})
 
@@ -71,9 +74,10 @@ sched = BackgroundScheduler()
 
 def calcvote1():
     Suba.objects.all().delete()
+    Voted1.objects.all().delete()
     print("Hello World!")
 
-sched.add_job(calcvote1, 'cron', minute='46')
+sched.add_job(calcvote1, 'cron', minute='45')
 sched.start()
 
 
@@ -82,13 +86,17 @@ sched.start()
 def vote1(request, suba_id):
     if request.user.is_authenticated:
         xyz = request.user
-        if Voted1.objects.filter(voter=xyz).exists()==False:
-            suba = Suba.objects.get(pk=suba_id)
-            suba.vote += 1
-            suba.save()
-            Voted1.objects.create(voter=xyz, voted=True)
-            return redirect('story1')
+        subas = Suba.objects.get(pk=suba_id)
+        if subas.author != xyz:
+            if Voted1.objects.filter(voter=xyz).exists()==False:
+                suba = Suba.objects.get(pk=suba_id)
+                suba.vote += 1
+                suba.save()
+                Voted1.objects.create(voter=xyz, voted=True)
+                return redirect('story1')
+            else:
+                return redirect('already')
         else:
-            return redirect('already')
+            return redirect('nicetry')
     else:
         return redirect('signup1')

@@ -12,6 +12,6 @@ urlpatterns = [
     url(r'^story1read/$', views.story1read, name='story1read'),
     url(r'^story1submit/$', views.story1submit, name='story1submit'),
     url(r'^already/$', views.already, name='already'),
-
+    url(r'^nicetry/$', views.nicetry, name='nicetry'),
     url(r'^story1/vote1/(?P<suba_id>[0-9]+)/$', views.vote1, name='vote1'),
 ]
