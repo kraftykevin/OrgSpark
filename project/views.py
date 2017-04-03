@@ -9,7 +9,8 @@ from .forms import SubaForm
 def home(request):
     return render(request, 'project/home.html', {})
 
-
+def already(request):
+    return render(request, 'project/already.html', {})
 
 def signup1(request):
     return render(request, 'registration/signup1.html', {})
@@ -43,15 +44,33 @@ def story1contrib(request):
 def story1submit(request):
     if request.method == "POST":
         if request.user.is_authenticated:
-            form = SubaForm(request.POST)
-            if form.is_valid():
-                post = form.save(commit=False)
-                post.author = request.user
-                post.vote = 0
-                post.save()
-            return redirect('story1')
+            xyz=request.user
+            if Suba.objects.filter(author=xyz).exists()==False:
+                form = SubaForm(request.POST)
+                if form.is_valid():
+                    post = form.save(commit=False)
+                    post.author = request.user
+                    post.vote = 0
+                    post.save()
+                    return redirect('story1')
+            else:
+                return redirect('already')
         else:
             return redirect('signup1')
     else:
         form = SubaForm()
     return render(request, 'project/story1submit.html', {'form': form})
+
+
+
+
+
+from apscheduler.schedulers.background import BackgroundScheduler
+sched = BackgroundScheduler()
+
+def calcvote1():
+    Suba.objects.all().delete()
+    print("Hello World!")
+
+sched.add_job(calcvote1, 'cron', minute='46')
+sched.start()

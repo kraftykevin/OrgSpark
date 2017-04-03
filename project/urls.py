@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^story1/$', views.story1contrib, name='story1'),
     url(r'^story1read/$', views.story1read, name='story1read'),
     url(r'^story1submit/$', views.story1submit, name='story1submit'),
+    url(r'^already/$', views.already, name='already'),
 ]
