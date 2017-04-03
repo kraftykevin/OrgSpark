@@ -5,7 +5,8 @@ from django.db import models
 class Texta(models.Model):
     author = models.ForeignKey('auth.User')
     text = models.CharField(max_length=250)
-    # use pk value for num added
+    vote = models.IntegerField(default=0)
+    # using pk value for num added
 
 class Suba(models.Model):
     author = models.ForeignKey('auth.User')

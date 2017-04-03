@@ -73,13 +73,22 @@ from apscheduler.schedulers.background import BackgroundScheduler
 sched = BackgroundScheduler()
 
 def calcvote1():
-    Suba.objects.all().delete()
-    Voted1.objects.all().delete()
-    print("Hello World!")
+    x = Suba.objects.order_by('vote').last()
+    if x == None:
+        return
+    elif x.vote < 3: #need at least four votes
+        Suba.objects.filter(vote__lt=x.vote).delete()
+        Voted1.objects.all().delete()
+    elif Suba.objects.filter(vote=x.vote).count() > 1:
+        Suba.objects.filter(vote__lt=x.vote).delete()
+        Voted1.objects.all().delete()
+    else:
+        Texta.objects.create(text=x.text, author=x.author, vote=x.vote)
+        Suba.objects.all().delete()
+        Voted1.objects.all().delete()
 
-sched.add_job(calcvote1, 'cron', minute='45')
+sched.add_job(calcvote1, 'cron', minute='58')
 sched.start()
-
 
 
 
