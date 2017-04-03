@@ -1,7 +1,8 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from .models import Texta, Suba
+from django.http import HttpResponse
+from .models import Texta, Suba, Voted1
 from .forms import SubaForm
 
 
@@ -40,7 +41,7 @@ def story1contrib(request):
     return render(request, 'project/story1.html', {'suba1':suba1})
 
 
-
+#Posting Text
 def story1submit(request):
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -74,3 +75,20 @@ def calcvote1():
 
 sched.add_job(calcvote1, 'cron', minute='46')
 sched.start()
+
+
+
+
+def vote1(request, suba_id):
+    if request.user.is_authenticated:
+        xyz = request.user
+        if Voted1.objects.filter(voter=xyz).exists()==False:
+            suba = Suba.objects.get(pk=suba_id)
+            suba.vote += 1
+            suba.save()
+            Voted1.objects.create(voter=xyz, voted=True)
+            return redirect('story1')
+        else:
+            return redirect('already')
+    else:
+        return redirect('signup1')

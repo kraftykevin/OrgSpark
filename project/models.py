@@ -11,3 +11,7 @@ class Suba(models.Model):
     author = models.ForeignKey('auth.User')
     text = models.CharField(max_length=250)
     vote = models.IntegerField()
+
+class Voted1(models.Model):
+    voter = models.ForeignKey('auth.User')
+    voted = models.BooleanField(default=False)
