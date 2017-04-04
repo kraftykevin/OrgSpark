@@ -16,6 +16,9 @@ def nicetry(request):
 def already(request):
     return render(request, 'project/already.html', {})
 
+def alreadyvoted(request):
+    return render(request, 'project/alreadyvoted.html', {})
+
 def signup1(request):
     return render(request, 'registration/signup1.html', {})
 
@@ -34,9 +37,25 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
+
+
+
+
 def story1read(request):
     story1 = Texta.objects.order_by('pk')
-    return render(request, 'project/story1read.html', {'story1': story1})
+    x =  Texta.objects.all().count()
+    z=""
+    for i in range (1, x+1):
+        y = str(Texta.objects.get(pk=i))
+        z = z+"  "+y
+    z = z.replace('^', '<br>')
+    return render(request, 'project/story1read.html', {'z': z})
+
+
+
+
+
 
 
 def story1contrib(request):
@@ -76,7 +95,7 @@ def calcvote1():
     x = Suba.objects.order_by('vote').last()
     if x == None:
         return
-    elif x.vote < 3: #need at least four votes
+    elif x.vote < 4: #need at least four votes
         Suba.objects.filter(vote__lt=x.vote).delete()
         Voted1.objects.all().delete()
     elif Suba.objects.filter(vote=x.vote).count() > 1:
@@ -87,7 +106,7 @@ def calcvote1():
         Suba.objects.all().delete()
         Voted1.objects.all().delete()
 
-sched.add_job(calcvote1, 'cron', minute='58')
+sched.add_job(calcvote1, 'cron', minute='40')
 sched.start()
 
 
@@ -104,7 +123,7 @@ def vote1(request, suba_id):
                 Voted1.objects.create(voter=xyz, voted=True)
                 return redirect('story1')
             else:
-                return redirect('already')
+                return redirect('alreadyvoted')
         else:
             return redirect('nicetry')
     else:
