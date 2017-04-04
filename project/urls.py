@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^already/$', views.already, name='already'),
     url(r'^alreadyvoted/$', views.alreadyvoted, name='alreadyvoted'),
     url(r'^nicetry/$', views.nicetry, name='nicetry'),
+    url(r'^prompt1/$', views.prompt1, name='prompt1'),
     url(r'^story1/vote1/(?P<suba_id>[0-9]+)/$', views.vote1, name='vote1'),
 ]

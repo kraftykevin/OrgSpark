@@ -20,3 +20,8 @@ class Suba(models.Model):
 class Voted1(models.Model):
     voter = models.ForeignKey('auth.User')
     voted = models.BooleanField(default=False)
+
+class Story1(models.Model):
+    para = models.TextField()
+    def __str__(self):
+        return self.text

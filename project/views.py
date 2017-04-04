@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Texta, Suba, Voted1
+from .models import Texta, Suba, Voted1, Story1
 from .forms import SubaForm
 
 
@@ -21,6 +21,9 @@ def alreadyvoted(request):
 
 def signup1(request):
     return render(request, 'registration/signup1.html', {})
+
+def prompt1(request):
+    return render(request, 'project/prompt1.html', {})
 
 #signup process -
 def signup(request):
@@ -52,40 +55,9 @@ def story1read(request):
     return render(request, 'project/story1read.html', {'z': z})
 
 
-
-
-#experimental new paragraph version
-# This totally works, but is probably expensive
-# because it recalculates the whole thing every timezone
-# and I can't figure out how to get rid of the brackets from
-#displaying a list in html
-#maybe I could try the same thing by passing each paragraph to a new Model????? 
 def story1read(request):
-    x = Texta.objects.all().count()
-    lastentry=Texta.objects.get(pk=x)
-    textlist = []
-    z=""
-    for i in range (1, x+1):
-        y = Texta.objects.get(pk=i)
-        if y.newpar==True:
-            textlist.append(z)
-            z = str(y)+"  "
-        else:
-            z = z +"  "+str(y)
-    if lastentry.newpar==True:
-        textlist.append(z)
-    return render(request, 'project/story1read.html', {'textlist': textlist})
-
-
-
-
-
-
-
-
-
-
-
+    zzz = Story1.objects.order_by('pk')
+    return render(request, 'project/story1read.html', {'zzz': zzz})
 
 def story1contrib(request):
     suba1 = Suba.objects.order_by('vote').reverse()
@@ -132,26 +104,45 @@ def calcvote1():
         Texta.objects.create(text=x.text, author=x.author, vote=x.vote, newpar=x.newpar)
         Suba.objects.all().delete()
         Voted1.objects.all().delete()
+        # figure out how to add to pararaph model Story1
 
-sched.add_job(calcvote1, 'cron', minute='40')
+        z = Texta.objects.all().count()
+        lastentry=Texta.objects.get(pk=z)
+        zz = Story1.objects.all().count()
+        if zz == 0:
+            Story1.objects.create(para=lastentry.text)
+            return
+        story1lastentry=Story1.objects.get(pk=zz)
+        if lastentry.newpar == True:
+            Story1.objects.create(para=lastentry.text)
+            #start new story1 object for new paragraph
+        else:
+            story1lastentry.para=str(story1lastentry.para)+"  "+str(lastentry.text)
+            story1lastentry.save()
+
+
+sched.add_job(calcvote1, 'cron', minute='00')
 sched.start()
 
 
 
 def vote1(request, suba_id):
     if request.user.is_authenticated:
-        xyz = request.user
-        subas = Suba.objects.get(pk=suba_id)
-        if subas.author != xyz:
-            if Voted1.objects.filter(voter=xyz).exists()==False:
-                suba = Suba.objects.get(pk=suba_id)
-                suba.vote += 1
-                suba.save()
-                Voted1.objects.create(voter=xyz, voted=True)
-                return redirect('story1')
+        if Suba.objects.filter(pk=suba_id).exists():
+            xyz = request.user
+            subas = Suba.objects.get(pk=suba_id)
+            if subas.author != xyz:
+                if Voted1.objects.filter(voter=xyz).exists()==False:
+                    suba = Suba.objects.get(pk=suba_id)
+                    suba.vote += 1
+                    suba.save()
+                    Voted1.objects.create(voter=xyz, voted=True)
+                    return redirect('story1')
+                else:
+                    return redirect('alreadyvoted')
             else:
-                return redirect('alreadyvoted')
+                return redirect('nicetry')
         else:
-            return redirect('nicetry')
+            return redirect('story1')
     else:
         return redirect('signup1')
