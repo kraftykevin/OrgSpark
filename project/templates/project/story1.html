@@ -12,6 +12,7 @@
       <p>________________________________________________________</p>
         <p><a href="vote1/{{ suba.id }}">Vote:</a> {{ suba.vote }}</p>
         <p>Author: {{ suba.author }}</p>
+        <p>Start of new paragraph? {{ suba.newpar|yesno:"Yes,No" }}
         <p>Submission: {{ suba.text }}</p>
 
     </div>

@@ -41,7 +41,7 @@ def signup(request):
 
 
 
-
+#working version
 def story1read(request):
     story1 = Texta.objects.order_by('pk')
     x =  Texta.objects.all().count()
@@ -49,8 +49,37 @@ def story1read(request):
     for i in range (1, x+1):
         y = str(Texta.objects.get(pk=i))
         z = z+"  "+y
-    z = z.replace('^', '<br>')
     return render(request, 'project/story1read.html', {'z': z})
+
+
+
+
+#experimental new paragraph version
+# This totally works, but is probably expensive
+# because it recalculates the whole thing every timezone
+# and I can't figure out how to get rid of the brackets from
+#displaying a list in html
+#maybe I could try the same thing by passing each paragraph to a new Model????? 
+def story1read(request):
+    x = Texta.objects.all().count()
+    lastentry=Texta.objects.get(pk=x)
+    textlist = []
+    z=""
+    for i in range (1, x+1):
+        y = Texta.objects.get(pk=i)
+        if y.newpar==True:
+            textlist.append(z)
+            z = str(y)+"  "
+        else:
+            z = z +"  "+str(y)
+    if lastentry.newpar==True:
+        textlist.append(z)
+    return render(request, 'project/story1read.html', {'textlist': textlist})
+
+
+
+
+
 
 
 
@@ -86,8 +115,6 @@ def story1submit(request):
 
 
 
-
-
 from apscheduler.schedulers.background import BackgroundScheduler
 sched = BackgroundScheduler()
 
@@ -102,7 +129,7 @@ def calcvote1():
         Suba.objects.filter(vote__lt=x.vote).delete()
         Voted1.objects.all().delete()
     else:
-        Texta.objects.create(text=x.text, author=x.author, vote=x.vote)
+        Texta.objects.create(text=x.text, author=x.author, vote=x.vote, newpar=x.newpar)
         Suba.objects.all().delete()
         Voted1.objects.all().delete()
 
