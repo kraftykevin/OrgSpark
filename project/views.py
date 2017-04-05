@@ -3,7 +3,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Texta, Suba, Voted1, Story1
-from .forms import SubaForm
+from .forms import SubaForm, UserCreateForm
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+
 
 
 # home goes to the home page
@@ -22,42 +25,63 @@ def alreadyvoted(request):
 def signup1(request):
     return render(request, 'registration/signup1.html', {})
 
+def signup2(request):
+    return render(request, 'registration/signup2.html', {})
+
 def prompt1(request):
     return render(request, 'project/prompt1.html', {})
+
+def already3(request):
+    return render(request, 'project/already3.html', {})
+
+def activate(request):
+	id=int(request.GET.get('id'))
+	user = User.objects.get(id=id)
+	user.is_active=True
+	user.save()
+	return render(request,'registration/activation.html')
+
+
 
 #signup process -
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreateForm(request.POST)
         if form.is_valid():
-            form.save()
+            user=form.save(commit=False)
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
+            _email = form.cleaned_data.get('email')
+            if User.objects.filter(email=_email).exists():
+                return redirect('already3')
+            user.is_active=False
+            user.save()
+            _thisuser = User.objects.get(username = username)
+            id = _thisuser.pk
+            send_mail(
+                'Welcome to OrgSpark!',
+                'Here is the link to activate your OrgSpark account:\nhttp://127.0.0.1:8000/register_activate/activation/?id=%s' %(id),
+                'OrgSpark@gmail.com',
+                [_email],
+                fail_silently=False)
+            return redirect ('signup2')
     else:
-        form = UserCreationForm()
+        form = UserCreateForm()
     return render(request, 'registration/signup.html', {'form': form})
 
 
 
 
-
-#working version
-def story1read(request):
-    story1 = Texta.objects.order_by('pk')
-    x =  Texta.objects.all().count()
-    z=""
-    for i in range (1, x+1):
-        y = str(Texta.objects.get(pk=i))
-        z = z+"  "+y
-    return render(request, 'project/story1read.html', {'z': z})
-
-
 def story1read(request):
     zzz = Story1.objects.order_by('pk')
-    return render(request, 'project/story1read.html', {'zzz': zzz})
+    _user = request.user.username
+    _z = Texta.objects.filter(author__username=_user).count()
+    stake1 = "{0:.2f}%".format((_z / 500)*100)
+    _y = Texta.objects.count()
+    progress1 =    "{0:.2f}%".format((_y / 450) * 100)
+    return render(request, 'project/story1read.html', {'zzz': zzz, 'stake1': stake1, 'progress1': progress1})
+
+
 
 def story1contrib(request):
     suba1 = Suba.objects.order_by('vote').reverse()
@@ -101,7 +125,7 @@ def calcvote1():
         Suba.objects.filter(vote__lt=x.vote).delete()
         Voted1.objects.all().delete()
     else:
-        Texta.objects.create(text=x.text, author=x.author, vote=x.vote, newpar=x.newpar)
+        Texta.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Suba.objects.all().delete()
         Voted1.objects.all().delete()
         # figure out how to add to pararaph model Story1
@@ -110,18 +134,18 @@ def calcvote1():
         lastentry=Texta.objects.get(pk=z)
         zz = Story1.objects.all().count()
         if zz == 0:
-            Story1.objects.create(para=lastentry.text)
+            Story1.objects.create(text=lastentry.text)
             return
         story1lastentry=Story1.objects.get(pk=zz)
-        if lastentry.newpar == True:
-            Story1.objects.create(para=lastentry.text)
+        if lastentry.paragraph == True:
+            Story1.objects.create(text=lastentry.text)
             #start new story1 object for new paragraph
         else:
-            story1lastentry.para=str(story1lastentry.para)+"  "+str(lastentry.text)
+            story1lastentry.text=str(story1lastentry.text)+"  "+str(lastentry.text)
             story1lastentry.save()
 
 
-sched.add_job(calcvote1, 'cron', minute='00')
+sched.add_job(calcvote1, 'cron', minute='31')
 sched.start()
 
 

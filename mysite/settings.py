@@ -126,6 +126,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
-
 LOGIN_REDIRECT_URL = 'home' #added at redirect from user profile to home upon login at suggestion of https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
 LOGOUT_REDIRECT_URL = 'home'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'OrgSpark.@gmail.com'
+EMAIL_HOST_PASSWORD = 'HateTrump1'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -3,9 +3,16 @@
 
 {% block content %}
 
+
+
+<h1> You own {{stake1}} of this story so far.</h1>
+
+<h1> This story is {{progress1}} complete.  </h1>
+
+
 {% for story1 in zzz %}
     <div>
-        <p>{{ story1.para }}</p>
+        <p>{{ story1.text }}</p>
     </div>
 {% endfor %}
 
