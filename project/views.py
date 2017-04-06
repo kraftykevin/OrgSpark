@@ -121,9 +121,11 @@ def calcvote1():
     elif x.vote < 4: #need at least four votes
         Suba.objects.filter(vote__lt=x.vote).delete()
         Voted1.objects.all().delete()
+        return
     elif Suba.objects.filter(vote=x.vote).count() > 1:
         Suba.objects.filter(vote__lt=x.vote).delete()
         Voted1.objects.all().delete()
+        return
     else:
         Texta.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Suba.objects.all().delete()
@@ -137,10 +139,12 @@ def calcvote1():
         story1lastentry = Story1.objects.get(pk=zz)
         if lastentry.paragraph == True:
             Story1.objects.create(text=lastentry.text)
+            return
             #start new story1 object for new paragraph
         else:
             story1lastentry.text=str(story1lastentry.text)+"  "+str(lastentry.text)
             story1lastentry.save()
+            return
 
 
 
@@ -290,9 +294,11 @@ def calcvote2():
     elif x.vote < 4: #need at least four votes
         Subb.objects.filter(vote__lt=x.vote).delete()
         Voted2.objects.all().delete()
+        return
     elif Subb.objects.filter(vote=x.vote).count() > 1:
         Subb.objects.filter(vote__lt=x.vote).delete()
         Voted2.objects.all().delete()
+        return
     else:
         Textb.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Subb.objects.all().delete()
@@ -306,10 +312,12 @@ def calcvote2():
         story2lastentry = Story2.objects.get(pk=zz)
         if lastentry.paragraph == True:
             Story2.objects.create(text=lastentry.text)
+            return
             #start new story1 object for new paragraph
         else:
             story2lastentry.text=str(story2lastentry.text)+"  "+str(lastentry.text)
             story2lastentry.save()
+            return
 
 
 
@@ -320,9 +328,11 @@ def calcvote3():
     elif x.vote < 4: #need at least four votes
         Subc.objects.filter(vote__lt=x.vote).delete()
         Voted3.objects.all().delete()
+        return
     elif Subc.objects.filter(vote=x.vote).count() > 1:
         Subc.objects.filter(vote__lt=x.vote).delete()
         Voted3.objects.all().delete()
+        return
     else:
         Textc.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Subc.objects.all().delete()
@@ -336,11 +346,12 @@ def calcvote3():
         story3lastentry = Story3.objects.get(pk=zz)
         if lastentry.paragraph == True:
             Story3.objects.create(text=lastentry.text)
+            return
             #start new story1 object for new paragraph
         else:
             story3lastentry.text=str(story3lastentry.text)+"  "+str(lastentry.text)
             story3lastentry.save()
-
+            return
 
 
 
@@ -351,9 +362,11 @@ def calcvote4():
     elif x.vote < 4: #need at least four votes
         Subd.objects.filter(vote__lt=x.vote).delete()
         Voted4.objects.all().delete()
+        return
     elif Subd.objects.filter(vote=x.vote).count() > 1:
         Subd.objects.filter(vote__lt=x.vote).delete()
         Voted4.objects.all().delete()
+        return
     else:
         Textd.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Subd.objects.all().delete()
@@ -367,11 +380,12 @@ def calcvote4():
         story4lastentry = Story4.objects.get(pk=zz)
         if lastentry.paragraph == True:
             Story4.objects.create(text=lastentry.text)
+            return
             #start new story1 object for new paragraph
         else:
             story4lastentry.text=str(story4lastentry.text)+"  "+str(lastentry.text)
             story4lastentry.save()
-
+            return
 
 sched.add_job(calcvote1, 'cron', minute='00')
 sched.add_job(calcvote2, 'cron', minute='15')
