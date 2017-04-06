@@ -1,0 +1,19 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+
+
+<h1> You own {{stake4}} of this story so far.</h1>
+
+<h1> This story is {{progress4}} complete.  </h1>
+
+
+{% for story4 in zzz %}
+    <div>
+        <p>{{ story4.text }}</p>
+    </div>
+{% endfor %}
+
+
+{% endblock %}

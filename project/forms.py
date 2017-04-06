@@ -1,18 +1,9 @@
 from django.forms import ModelForm, Textarea, CheckboxInput, EmailField
-from .models import Suba
+from .models import Suba, Subb, Subc, Subd
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
-
-class SubaForm(ModelForm):
-    class Meta:
-        model = Suba
-        fields = ('text', 'paragraph',)
-        widgets = {
-            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
-            'paragraph': CheckboxInput()
-        }
 
 
 
@@ -27,3 +18,44 @@ class UserCreateForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class SubaForm(ModelForm):
+    class Meta:
+        model = Suba
+        fields = ('text', 'paragraph',)
+        widgets = {
+            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
+            'paragraph': CheckboxInput()
+        }
+
+
+
+# copy paste code past this point.  DRY out.
+
+
+class SubbForm(ModelForm):
+    class Meta:
+        model = Subb
+        fields = ('text', 'paragraph',)
+        widgets = {
+            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
+            'paragraph': CheckboxInput()
+        }
+
+class SubcForm(ModelForm):
+    class Meta:
+        model = Subc
+        fields = ('text', 'paragraph',)
+        widgets = {
+            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
+            'paragraph': CheckboxInput()
+        }
+
+class SubdForm(ModelForm):
+    class Meta:
+        model = Subd
+        fields = ('text', 'paragraph',)
+        widgets = {
+            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
+            'paragraph': CheckboxInput()
+        }

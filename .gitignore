@@ -1,6 +1,8 @@
 *.pyc
 *~
 __pycache__
-myvenv
 /static
 .DS_Store
+db.sqlite3
+osk
+local_settings.py

@@ -1,0 +1,27 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h1> Next vote at :30 minutes. </h1>
+
+<a href="/story3read">Read the story so far....</a>
+<p>________________________________________________________</p>
+
+<a href="/prompt3">What's the story about?</a>
+<p>________________________________________________________</p>
+
+<a href="/story3submit">Add to the story...</a>
+
+{% for subc in subc3 %}
+    <div>
+      <p>________________________________________________________</p>
+        <p><a href="vote3/{{ subc.id }}">Vote:</a> {{ subc.vote }}</p>
+        <p>Author: {{ subc.author }}</p>
+        <p>Start of new paragraph? {{ subc.paragraph|yesno:"Yes,No" }}
+        <p>Submission: {{ subc.text }}</p>
+
+    </div>
+{% endfor %}
+
+
+{% endblock %}
