@@ -136,12 +136,12 @@ def calcvote1():
         if zz == 0:
             Story1.objects.create(text=lastentry.text)
             return
-        story1lastentry = Story1.objects.get(pk=zz)
-        if lastentry.paragraph == True:
+        elif lastentry.paragraph == True:
             Story1.objects.create(text=lastentry.text)
             return
             #start new story1 object for new paragraph
         else:
+            story1lastentry = Story1.objects.get(pk=zz)
             story1lastentry.text=str(story1lastentry.text)+"  "+str(lastentry.text)
             story1lastentry.save()
             return
@@ -309,12 +309,12 @@ def calcvote2():
         if zz == 0:
             Story2.objects.create(text=lastentry.text)
             return
-        story2lastentry = Story2.objects.get(pk=zz)
-        if lastentry.paragraph == True:
+        elif lastentry.paragraph == True:
             Story2.objects.create(text=lastentry.text)
             return
             #start new story1 object for new paragraph
         else:
+            story2lastentry = Story2.objects.get(pk=zz)
             story2lastentry.text=str(story2lastentry.text)+"  "+str(lastentry.text)
             story2lastentry.save()
             return
@@ -344,12 +344,12 @@ def calcvote3():
         if zz == 0:
             Story3.objects.create(text=lastentry.text)
             return
-        story3lastentry = Story3.objects.get(pk=zz)
-        if lastentry.paragraph == True:
+        elif lastentry.paragraph == True:
             Story3.objects.create(text=lastentry.text)
             return
             #start new story1 object for new paragraph
         else:
+            story3lastentry = Story3.objects.get(pk=zz)
             story3lastentry.text=str(story3lastentry.text)+"  "+str(lastentry.text)
             story3lastentry.save()
             return
@@ -378,12 +378,12 @@ def calcvote4():
         if zz == 0:
             Story4.objects.create(text=lastentry.text)
             return
-        story4lastentry = Story4.objects.get(pk=zz)
-        if lastentry.paragraph == True:
+        elif lastentry.paragraph == True:
             Story4.objects.create(text=lastentry.text)
             return
             #start new story1 object for new paragraph
         else:
+            story4lastentry = Story4.objects.get(pk=zz)
             story4lastentry.text=str(story4lastentry.text)+"  "+str(lastentry.text)
             story4lastentry.save()
             return
