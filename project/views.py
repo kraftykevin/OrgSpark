@@ -119,11 +119,11 @@ def calcvote1():
     if x == None:
         return
     elif x.vote < 4: #need at least four votes
-        Suba.objects.filter(vote__lt=x.vote).delete()
+        #Suba.objects.filter(vote__lt=x.vote).delete()
         Voted1.objects.all().delete()
         return
     elif Suba.objects.filter(vote=x.vote).count() > 1:
-        Suba.objects.filter(vote__lt=x.vote).delete()
+        #Suba.objects.filter(vote__lt=x.vote).delete()
         Voted1.objects.all().delete()
         return
     else:
@@ -292,11 +292,11 @@ def calcvote2():
     if x == None:
         return
     elif x.vote < 4: #need at least four votes
-        Subb.objects.filter(vote__lt=x.vote).delete()
+        #Subb.objects.filter(vote__lt=x.vote).delete()
         Voted2.objects.all().delete()
         return
     elif Subb.objects.filter(vote=x.vote).count() > 1:
-        Subb.objects.filter(vote__lt=x.vote).delete()
+        #Subb.objects.filter(vote__lt=x.vote).delete()
         Voted2.objects.all().delete()
         return
     else:
@@ -326,11 +326,11 @@ def calcvote3():
     if x == None:
         return
     elif x.vote < 4: #need at least four votes
-        Subc.objects.filter(vote__lt=x.vote).delete()
+        #Subc.objects.filter(vote__lt=x.vote).delete()
         Voted3.objects.all().delete()
         return
     elif Subc.objects.filter(vote=x.vote).count() > 1:
-        Subc.objects.filter(vote__lt=x.vote).delete()
+        #Subc.objects.filter(vote__lt=x.vote).delete()
         Voted3.objects.all().delete()
         return
     else:
@@ -361,11 +361,11 @@ def calcvote4():
     if x == None:
         return
     elif x.vote < 4: #need at least four votes
-        Subd.objects.filter(vote__lt=x.vote).delete()
+        #Subd.objects.filter(vote__lt=x.vote).delete()
         Voted4.objects.all().delete()
         return
     elif Subd.objects.filter(vote=x.vote).count() > 1:
-        Subd.objects.filter(vote__lt=x.vote).delete()
+        #Subd.objects.filter(vote__lt=x.vote).delete()
         Voted4.objects.all().delete()
         return
     else:
