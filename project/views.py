@@ -340,6 +340,7 @@ def calcvote3():
         z = Textc.objects.all().count()
         lastentry=Textc.objects.get(pk=z)
         zz = Story3.objects.all().count()
+        zz = zz+1
         if zz == 0:
             Story3.objects.create(text=lastentry.text)
             return
