@@ -70,26 +70,8 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
-
-
-def story1read(request):
-    zzz = Story1.objects.order_by('pk')
-    _user = request.user.username
-    _z = Texta.objects.filter(author__username=_user).count()
-    stake1 = "{0:.2f}%".format((_z / 500)*100)
-    _y = Texta.objects.count()
-    progress1 =    "{0:.2f}%".format((_y / 450) * 100)
-    return render(request, 'project/story1read.html', {'zzz': zzz, 'stake1': stake1, 'progress1': progress1})
-
-
-
-def story1contrib(request):
-    suba1 = Suba.objects.order_by('vote').reverse()
-    return render(request, 'project/story1.html', {'suba1':suba1})
-
-
 #Posting Text
-def story1submit(request):
+def story1(request):
     if request.method == "POST":
         if request.user.is_authenticated:
             xyz=request.user
@@ -107,13 +89,14 @@ def story1submit(request):
             return redirect('signup1')
     else:
         form = SubaForm()
-    return render(request, 'project/story1submit.html', {'form': form})
-
-
-
-
-
-
+        zzz = Story1.objects.order_by('pk')
+        _user = request.user.username
+        _z = Texta.objects.filter(author__username=_user).count()
+        stake1 = "{0:.2f}%".format((_z / 500)*100)
+        _y = Texta.objects.count()
+        progress1 =    "{0:.2f}%".format((_y / 450) * 100)
+        suba1 = Suba.objects.order_by('vote').reverse()
+        return render(request, 'project/story1.html', {'zzz': zzz, 'stake1': stake1, 'progress1': progress1, 'form': form, 'suba1':suba1})
 
 
 def vote1(request, suba_id):
@@ -140,53 +123,17 @@ def vote1(request, suba_id):
 
 
 
+
+
+
+
+
+
 # everything past here is just copy code, figure out how to dry it out!
 
-def story2read(request):
-    zzz = Story2.objects.order_by('pk')
-    _user = request.user.username
-    _z = Textb.objects.filter(author__username=_user).count()
-    stake2 = "{0:.2f}%".format((_z / 500)*100)
-    _y = Textb.objects.count()
-    progress2 =    "{0:.2f}%".format((_y / 450) * 100)
-    return render(request, 'project/story2read.html', {'zzz': zzz, 'stake2': stake2, 'progress2': progress2})
-
-def story3read(request):
-    zzz = Story3.objects.order_by('pk')
-    _user = request.user.username
-    _z = Textc.objects.filter(author__username=_user).count()
-    stake3 = "{0:.2f}%".format((_z / 500)*100)
-    _y = Textc.objects.count()
-    progress3 =    "{0:.2f}%".format((_y / 450) * 100)
-    return render(request, 'project/story3read.html', {'zzz': zzz, 'stake3': stake3, 'progress3': progress3})
-
-def story4read(request):
-    zzz = Story4.objects.order_by('pk')
-    _user = request.user.username
-    _z = Textd.objects.filter(author__username=_user).count()
-    stake4 = "{0:.2f}%".format((_z / 500)*100)
-    _y = Textd.objects.count()
-    progress4 =    "{0:.2f}%".format((_y / 450) * 100)
-    return render(request, 'project/story4read.html', {'zzz': zzz, 'stake4': stake4, 'progress4': progress4})
-
-#------------------------------------
-
-def story2contrib(request):
-    subb2 = Subb.objects.order_by('vote').reverse()
-    return render(request, 'project/story2.html', {'subb2':subb2})
-
-def story3contrib(request):
-    subc3 = Subc.objects.order_by('vote').reverse()
-    return render(request, 'project/story3.html', {'subc3':subc3})
-
-def story4contrib(request):
-    subd4 = Subd.objects.order_by('vote').reverse()
-    return render(request, 'project/story4.html', {'subd4':subd4})
 
 
-# -----------------------------------------
-
-def story2submit(request):
+def story2(request):
     if request.method == "POST":
         if request.user.is_authenticated:
             xyz=request.user
@@ -204,11 +151,19 @@ def story2submit(request):
             return redirect('signup1')
     else:
         form = SubbForm()
-    return render(request, 'project/story2submit.html', {'form': form})
+        zzz = Story2.objects.order_by('pk')
+        _user = request.user.username
+        _z = Textb.objects.filter(author__username=_user).count()
+        stake2 = "{0:.2f}%".format((_z / 500)*100)
+        _y = Textb.objects.count()
+        progress2 =    "{0:.2f}%".format((_y / 450) * 100)
+        subb2 = Subb.objects.order_by('vote').reverse()
+        return render(request, 'project/story2.html', {'zzz': zzz, 'stake2': stake2, 'progress2': progress2, 'form': form, 'subb2':subb2})
 
 
 
-def story3submit(request):
+
+def story3(request):
     if request.method == "POST":
         if request.user.is_authenticated:
             xyz=request.user
@@ -223,14 +178,20 @@ def story3submit(request):
             else:
                 return redirect('already')
         else:
-            return redirect('signup1')
+            return redirect('signup3')
     else:
         form = SubcForm()
-    return render(request, 'project/story3submit.html', {'form': form})
+        zzz = Story3.objects.order_by('pk')
+        _user = request.user.username
+        _z = Textc.objects.filter(author__username=_user).count()
+        stake3 = "{0:.2f}%".format((_z / 500)*100)
+        _y = Textc.objects.count()
+        progress3 =    "{0:.2f}%".format((_y / 450) * 100)
+        subc3 = Subc.objects.order_by('vote').reverse()
+        return render(request, 'project/story3.html', {'zzz': zzz, 'stake3': stake3, 'progress3': progress3, 'form': form, 'subc3':subc3})
 
 
-
-def story4submit(request):
+def story4(request):
     if request.method == "POST":
         if request.user.is_authenticated:
             xyz=request.user
@@ -245,14 +206,17 @@ def story4submit(request):
             else:
                 return redirect('already')
         else:
-            return redirect('signup1')
+            return redirect('signup4')
     else:
         form = SubdForm()
-    return render(request, 'project/story4submit.html', {'form': form})
-
-# -----------------------------------------------------------
-
-
+        zzz = Story4.objects.order_by('pk')
+        _user = request.user.username
+        _z = Textd.objects.filter(author__username=_user).count()
+        stake4 = "{0:.2f}%".format((_z / 500)*100)
+        _y = Textd.objects.count()
+        progress4 =    "{0:.2f}%".format((_y / 450) * 100)
+        subd4 = Subd.objects.order_by('vote').reverse()
+        return render(request, 'project/story4.html', {'zzz': zzz, 'stake4': stake4, 'progress4': progress4, 'form': form, 'subd4':subd4})
 
 # -------------------------------------------
 

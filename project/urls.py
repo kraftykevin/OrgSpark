@@ -15,27 +15,19 @@ urlpatterns = [
     url(r'^nicetry/$', views.nicetry, name='nicetry'),
     url(r'^register_activate/activation/',views.activate, name='activation'),
     # above are ones that don't need to be copied.
-    url(r'^story1/$', views.story1contrib, name='story1'),
-    url(r'^story1read/$', views.story1read, name='story1read'),
-    url(r'^story1submit/$', views.story1submit, name='story1submit'),
+    url(r'^story1/$', views.story1, name='story1'),
     url(r'^prompt1/$', views.prompt1, name='prompt1'),
     url(r'^story1/vote1/(?P<suba_id>[0-9]+)/$', views.vote1, name='vote1'),
     #here are the bad urls that need DRY
-    url(r'^story2/$', views.story2contrib, name='story2'),
-    url(r'^story2read/$', views.story2read, name='story2read'),
-    url(r'^story2submit/$', views.story2submit, name='story2submit'),
+    url(r'^story2/$', views.story2, name='story2'),
     url(r'^prompt2/$', views.prompt2, name='prompt2'),
     url(r'^story2/vote2/(?P<subb_id>[0-9]+)/$', views.vote2, name='vote2'),
     # next
-    url(r'^story3/$', views.story3contrib, name='story3'),
-    url(r'^story3read/$', views.story3read, name='story3read'),
-    url(r'^story3submit/$', views.story3submit, name='story3submit'),
+    url(r'^story3/$', views.story3, name='story3'),
     url(r'^prompt3/$', views.prompt3, name='prompt3'),
     url(r'^story3/vote3/(?P<subc_id>[0-9]+)/$', views.vote3, name='vote3'),
     # next
-    url(r'^story4/$', views.story4contrib, name='story4'),
-    url(r'^story4read/$', views.story4read, name='story4read'),
-    url(r'^story4submit/$', views.story4submit, name='story4submit'),
+    url(r'^story4/$', views.story4, name='story4'),
     url(r'^prompt4/$', views.prompt4, name='prompt4'),
-    url(r'^story4/vote4/(?P<subd_id>[0-9]+)/$', views.vote4, name='vote4'),    
+    url(r'^story4/vote4/(?P<subd_id>[0-9]+)/$', views.vote4, name='vote4'),
 ]

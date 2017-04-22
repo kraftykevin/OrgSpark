@@ -3,16 +3,33 @@
 {% block content %}
 
 <h1> Condor 7 </h1>
+<a href="/prompt1">The Prompt</a>
 
-<h1> Next vote at :00 minutes. </h1>
 
-<a href="/story1read">Read the story so far....</a>
-<p>________________________________________________________</p>
+<div style="height:350px;width:1000px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+{% for story1 in zzz %}
+    <div>
+        <p>{{ story1.text }}</p>
+    </div>
+{% endfor %}
+</div>
 
-<a href="/prompt1">What's the story about?</a>
-<p>________________________________________________________</p>
+<p> This story is {{progress1}} complete.  </p>
 
-<a href="/story1submit">Add to the story...</a>
+<p> You own {{stake1}} of this story so far.</p>
+
+<p>Add to the story here. </p>
+
+<form method="POST" class="post-form">
+    {% csrf_token %}
+     {{ form }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+<p> Check this box if you are starting a new paragraph.</p>
+
+
+<h1> Vote here.  </h1>
+Vote every hour at :00 minutes, if there are less than four votes or a tie voting continues and you can vote again. </p>
 
 {% for suba in suba1 %}
     <div>
@@ -24,6 +41,5 @@
 
     </div>
 {% endfor %}
-
 
 {% endblock %}
