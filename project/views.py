@@ -73,20 +73,26 @@ def signup(request):
 #Posting Text
 def story1(request):
     if request.method == "POST":
-        if request.user.is_authenticated:
-            xyz=request.user
-            if Suba.objects.filter(author=xyz).exists()==False:
+        #if request.user.is_authenticated:
+        # Uncomment above line to make it so only logged in users can post
+                xyz=request.user
+            #if Suba.objects.filter(author=xyz).exists()==False:
                 form = SubaForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
-                    post.author = request.user
+                    if request.user.is_authenticated:
+                        post.author = request.user
+                    else:
+                        _x = User.objects.get(username="Anonymous")
+                        post.author = _x
                     post.vote = 0
                     post.save()
                     return redirect('story1')
-            else:
-                return redirect('already')
-        else:
-            return redirect('signup1')
+            #else:
+                #return redirect('already')
+        #else:
+            #return redirect('signup1')
+            # uncomment above line to make it so only logged in users can post
     else:
         form = SubaForm()
         zzz = Story1.objects.order_by('pk')
@@ -135,20 +141,24 @@ def vote1(request, suba_id):
 
 def story2(request):
     if request.method == "POST":
-        if request.user.is_authenticated:
-            xyz=request.user
-            if Subb.objects.filter(author=xyz).exists()==False:
+        #if request.user.is_authenticated:
+                xyz=request.user
+            #if Subb.objects.filter(author=xyz).exists()==False:
                 form = SubbForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
-                    post.author = request.user
+                    if request.user.is_authenticated:
+                        post.author = request.user
+                    else:
+                        _x = User.objects.get(username="Anonymous")
+                        post.author = _x
                     post.vote = 0
                     post.save()
                     return redirect('story2')
-            else:
-                return redirect('already')
-        else:
-            return redirect('signup1')
+            #else:
+                #return redirect('already')
+        #else:
+            #return redirect('signup1')
     else:
         form = SubbForm()
         zzz = Story2.objects.order_by('pk')
@@ -165,20 +175,24 @@ def story2(request):
 
 def story3(request):
     if request.method == "POST":
-        if request.user.is_authenticated:
-            xyz=request.user
-            if Subc.objects.filter(author=xyz).exists()==False:
+        #if request.user.is_authenticated:
+                xyz=request.user
+            #if Subc.objects.filter(author=xyz).exists()==False:
                 form = SubcForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
-                    post.author = request.user
+                    if request.user.is_authenticated:
+                        post.author = request.user
+                    else:
+                        _x = User.objects.get(username="Anonymous")
+                        post.author = _x
                     post.vote = 0
                     post.save()
                     return redirect('story3')
-            else:
-                return redirect('already')
-        else:
-            return redirect('signup3')
+            #else:
+                #return redirect('already')
+        #else:
+            #return redirect('signup3')
     else:
         form = SubcForm()
         zzz = Story3.objects.order_by('pk')
@@ -193,20 +207,24 @@ def story3(request):
 
 def story4(request):
     if request.method == "POST":
-        if request.user.is_authenticated:
-            xyz=request.user
-            if Subd.objects.filter(author=xyz).exists()==False:
+        #if request.user.is_authenticated:
+                xyz=request.user
+            #if Subd.objects.filter(author=xyz).exists()==False:
                 form = SubdForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
-                    post.author = request.user
+                    if request.user.is_authenticated:
+                        post.author = request.user
+                    else:
+                        _x = User.objects.get(username="Anonymous")
+                        post.author = _x
                     post.vote = 0
                     post.save()
                     return redirect('story4')
-            else:
-                return redirect('already')
-        else:
-            return redirect('signup4')
+            #else:
+                #return redirect('already')
+        #else:
+            #return redirect('signup4')
     else:
         form = SubdForm()
         zzz = Story4.objects.order_by('pk')
