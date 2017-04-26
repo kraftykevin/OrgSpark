@@ -40,8 +40,7 @@ def activate(request):
 	return render(request,'registration/activation.html')
 
 
-def prompt1(request):
-    return render(request, 'project/prompt1.html', {})
+
 
 #signup process -
 def signup(request):
@@ -305,19 +304,7 @@ def vote4(request, subd_id):
     else:
         return redirect('signup1')
 
-#-------------------------------------------
 
-
-
-
-def prompt2(request):
-    return render(request, 'project/prompt2.html', {})
-
-def prompt3(request):
-    return render(request, 'project/prompt3.html', {})
-
-def prompt4(request):
-    return render(request, 'project/prompt4.html', {})
 
 
 #________________________________
