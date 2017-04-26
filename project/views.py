@@ -340,8 +340,8 @@ def calcvote1():
         Texta.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Suba.objects.all().delete()
         Voted1.objects.all().delete()
-        z = Texta.objects.all().count()
-        lastentry=Texta.objects.get(pk=z)
+        lastentry=Texta.objects.order_by('pk').last()
+        story1lastentry = Story1.objects.order_by('pk').last()
         zz = Story1.objects.all().count()
         if zz == 0:
             Story1.objects.create(text=lastentry.text)
@@ -351,11 +351,10 @@ def calcvote1():
             return
             #start new story1 object for new paragraph
         else:
-            story1lastentry = Story1.objects.get(pk=zz)
             story1lastentry.text=str(story1lastentry.text)+"  "+str(lastentry.text)
             story1lastentry.save()
             return
-
+            # removed z, moved story1lastentry creation up to, and keep zz.
 
 
 def calcvote2():
@@ -375,8 +374,8 @@ def calcvote2():
         Textb.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Subb.objects.all().delete()
         Voted2.objects.all().delete()
-        z = Textb.objects.all().count()
-        lastentry=Textb.objects.get(pk=z)
+        lastentry=Textb.objects.order_by('pk').last()
+        story2lastentry = Story2.objects.order_by('pk').last()
         zz = Story2.objects.all().count()
         if zz == 0:
             Story2.objects.create(text=lastentry.text)
@@ -386,7 +385,6 @@ def calcvote2():
             return
             #start new story1 object for new paragraph
         else:
-            story2lastentry = Story2.objects.get(pk=zz)
             story2lastentry.text=str(story2lastentry.text)+"  "+str(lastentry.text)
             story2lastentry.save()
             return
@@ -410,10 +408,9 @@ def calcvote3():
         Textc.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Subc.objects.all().delete()
         Voted3.objects.all().delete()
-        z = Textc.objects.all().count()
-        lastentry=Textc.objects.get(pk=z)
+        lastentry=Textc.objects.order_by('pk').last()
+        story3lastentry = Story3.objects.order_by('pk').last()
         zz = Story3.objects.all().count()
-        zz = zz+1
         if zz == 0:
             Story3.objects.create(text=lastentry.text)
             return
@@ -422,7 +419,6 @@ def calcvote3():
             return
             #start new story1 object for new paragraph
         else:
-            story3lastentry = Story3.objects.get(pk=zz)
             story3lastentry.text=str(story3lastentry.text)+"  "+str(lastentry.text)
             story3lastentry.save()
             return
@@ -446,8 +442,8 @@ def calcvote4():
         Textd.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
         Subd.objects.all().delete()
         Voted4.objects.all().delete()
-        z = Textd.objects.all().count()
-        lastentry=Textd.objects.get(pk=z)
+        lastentry=Textd.objects.order_by('pk').last()
+        story4lastentry = Story4.objects.order_by('pk').last()
         zz = Story4.objects.all().count()
         if zz == 0:
             Story4.objects.create(text=lastentry.text)
@@ -457,7 +453,6 @@ def calcvote4():
             return
             #start new story1 object for new paragraph
         else:
-            story4lastentry = Story4.objects.get(pk=zz)
             story4lastentry.text=str(story4lastentry.text)+"  "+str(lastentry.text)
             story4lastentry.save()
             return
