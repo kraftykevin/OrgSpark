@@ -33,6 +33,7 @@ def already3(request):
     return render(request, 'project/already3.html', {})
 
 def activate(request):
+    # This function activates a User.
 	id=int(request.GET.get('id'))
 	user = User.objects.get(id=id)
 	user.is_active=True
@@ -41,9 +42,8 @@ def activate(request):
 
 
 
-
-#signup process -
 def signup(request):
+    # This function creates a new user and sends them an activation email.
     if request.method == 'POST':
         form = UserCreateForm(request.POST)
         if form.is_valid():
@@ -69,8 +69,12 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
-#Posting Text
+
 def story1(request):
+    """
+    This function is the story for a page.  It includes rendering the story,
+    a place to post new text, and rendering submissions.
+    """
     if request.method == "POST":
         #if request.user.is_authenticated:
         # Uncomment above line to make it so only logged in users can post
@@ -94,17 +98,23 @@ def story1(request):
             # uncomment above line to make it so only logged in users can post
     else:
         form = SubaForm()
-        zzz = Story1.objects.order_by('pk')
+        whole_story = Story1.objects.order_by('pk')
+        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
         _user = request.user.username
         _z = Texta.objects.filter(author__username=_user).count()
-        stake1 = "{0:.2f}%".format((_z / 500)*100)
+        # _z is the number of accepted submissions for this user
+        user_stake = "{0:.2f}%".format((_z / 500)*100)
+        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
         _y = Texta.objects.count()
-        progress1 =    "{0:.2f}%".format((_y / 450) * 100)
-        suba1 = Suba.objects.order_by('vote').reverse()
-        return render(request, 'project/story1.html', {'zzz': zzz, 'stake1': stake1, 'progress1': progress1, 'form': form, 'suba1':suba1})
+        # Number of total accepted submissions so far
+        progress =    "{0:.2f}%".format((_y / 450) * 100)
+        submissions_by_vote = Suba.objects.order_by('vote').reverse()
+        #all present submissions ordered by number of votes
+        return render(request, 'project/story1.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
 
 
 def vote1(request, suba_id):
+    # This function allows folks to vote.
     if request.user.is_authenticated:
         if Suba.objects.filter(pk=suba_id).exists():
             xyz = request.user
