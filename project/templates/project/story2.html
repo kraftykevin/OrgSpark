@@ -11,16 +11,16 @@ Without their rogue missions the army of Carthage would have lost. </p>
 
 
 <div style="height:350px;width:800px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-{% for story2 in zzz %}
+{% for story2 in whole_story %}
     <div>
         <p>{{ story2.text }}</p>
     </div>
 {% endfor %}
 </div>
 
-<p> This story is {{progress2}} complete.  </p>
+<p> This story is {{progress}} complete.  </p>
 
-<p> You own {{stake2}} of this story so far.</p>
+<p> You own {{user_stake}} of this story so far.</p>
 
 <p>Add to the story here. </p>
 
@@ -35,7 +35,7 @@ Without their rogue missions the army of Carthage would have lost. </p>
 <h1> Vote here.  </h1>
 Vote every hour at :15 minutes, if there are less than four votes or a tie voting continues and you can vote again. </p>
 
-{% for subb in subb2 %}
+{% for subb in submissions_by_vote %}
     <div>
       <p>________________________________________________________</p>
         <p><a href="vote2/{{ subb.id }}">Vote:</a> {{ subb.vote }}</p>

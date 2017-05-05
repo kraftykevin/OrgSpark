@@ -8,16 +8,16 @@
 
 
 <div style="height:350px;width:800px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-{% for story4 in zzz %}
+{% for story4 in whole_story %}
     <div>
         <p>{{ story4.text }}</p>
     </div>
 {% endfor %}
 </div>
 
-<p> This story is {{progress4}} complete.  </p>
+<p> This story is {{progress}} complete.  </p>
 
-<p> You own {{stake4}} of this story so far.</p>
+<p> You own {{user_stake}} of this story so far.</p>
 
 <p>Add to the story here. </p>
 
@@ -32,7 +32,7 @@
 <h1> Vote here.  </h1>
 Vote every hour at :45 minutes, if there are less than four votes or a tie voting continues and you can vote again. </p>
 
-{% for subd in subd4 %}
+{% for subd in submissions_by_vote %}
     <div>
       <p>________________________________________________________</p>
         <p><a href="vote4/{{ subd.id }}">Vote:</a> {{ subd.vote }}</p>

@@ -78,7 +78,7 @@ def story1(request):
     if request.method == "POST":
         #if request.user.is_authenticated:
         # Uncomment above line to make it so only logged in users can post
-                xyz=request.user
+                #xyz=request.user
             #if Suba.objects.filter(author=xyz).exists()==False:
                 form = SubaForm(request.POST)
                 if form.is_valid():
@@ -88,7 +88,7 @@ def story1(request):
                     else:
                         _x = User.objects.get(username="Anonymous")
                         post.author = _x
-                    post.vote = 0
+                    post.vote = 1
                     post.save()
                     return redirect('story1')
             #else:
@@ -146,13 +146,16 @@ def vote1(request, suba_id):
 
 # everything past here is just copy code, figure out how to dry it out!
 
-
-
 def story2(request):
+    """
+    This function is the story for a page.  It includes rendering the story,
+    a place to post new text, and rendering submissions.
+    """
     if request.method == "POST":
         #if request.user.is_authenticated:
-                xyz=request.user
-            #if Subb.objects.filter(author=xyz).exists()==False:
+        # Uncomment above line to make it so only logged in users can post
+                #xyz=request.user
+            #if Suba.objects.filter(author=xyz).exists()==False:
                 form = SubbForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
@@ -161,32 +164,42 @@ def story2(request):
                     else:
                         _x = User.objects.get(username="Anonymous")
                         post.author = _x
-                    post.vote = 0
+                    post.vote = 1
                     post.save()
                     return redirect('story2')
             #else:
                 #return redirect('already')
         #else:
             #return redirect('signup1')
+            # uncomment above line to make it so only logged in users can post
     else:
         form = SubbForm()
-        zzz = Story2.objects.order_by('pk')
+        whole_story = Story2.objects.order_by('pk')
+        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
         _user = request.user.username
         _z = Textb.objects.filter(author__username=_user).count()
-        stake2 = "{0:.2f}%".format((_z / 500)*100)
+        # _z is the number of accepted submissions for this user
+        user_stake = "{0:.2f}%".format((_z / 500)*100)
+        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
         _y = Textb.objects.count()
-        progress2 =    "{0:.2f}%".format((_y / 450) * 100)
-        subb2 = Subb.objects.order_by('vote').reverse()
-        return render(request, 'project/story2.html', {'zzz': zzz, 'stake2': stake2, 'progress2': progress2, 'form': form, 'subb2':subb2})
-
+        # Number of total accepted submissions so far
+        progress = "{0:.2f}%".format((_y / 450) * 100)
+        submissions_by_vote = Subb.objects.order_by('vote').reverse()
+        #all present submissions ordered by number of votes
+        return render(request, 'project/story2.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
 
 
 
 def story3(request):
+    """
+    This function is the story for a page.  It includes rendering the story,
+    a place to post new text, and rendering submissions.
+    """
     if request.method == "POST":
         #if request.user.is_authenticated:
-                xyz=request.user
-            #if Subc.objects.filter(author=xyz).exists()==False:
+        # Uncomment above line to make it so only logged in users can post
+                #xyz=request.user
+            #if Suba.objects.filter(author=xyz).exists()==False:
                 form = SubcForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
@@ -195,30 +208,42 @@ def story3(request):
                     else:
                         _x = User.objects.get(username="Anonymous")
                         post.author = _x
-                    post.vote = 0
+                    post.vote = 1
                     post.save()
                     return redirect('story3')
             #else:
                 #return redirect('already')
         #else:
-            #return redirect('signup3')
+            #return redirect('signup1')
+            # uncomment above line to make it so only logged in users can post
     else:
         form = SubcForm()
-        zzz = Story3.objects.order_by('pk')
+        whole_story = Story3.objects.order_by('pk')
+        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
         _user = request.user.username
         _z = Textc.objects.filter(author__username=_user).count()
-        stake3 = "{0:.2f}%".format((_z / 500)*100)
+        # _z is the number of accepted submissions for this user
+        user_stake = "{0:.2f}%".format((_z / 500)*100)
+        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
         _y = Textc.objects.count()
-        progress3 =    "{0:.2f}%".format((_y / 450) * 100)
-        subc3 = Subc.objects.order_by('vote').reverse()
-        return render(request, 'project/story3.html', {'zzz': zzz, 'stake3': stake3, 'progress3': progress3, 'form': form, 'subc3':subc3})
+        # Number of total accepted submissions so far
+        progress = "{0:.2f}%".format((_y / 450) * 100)
+        submissions_by_vote = Subc.objects.order_by('vote').reverse()
+        #all present submissions ordered by number of votes
+        return render(request, 'project/story3.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
+
 
 
 def story4(request):
+    """
+    This function is the story for a page.  It includes rendering the story,
+    a place to post new text, and rendering submissions.
+    """
     if request.method == "POST":
         #if request.user.is_authenticated:
-                xyz=request.user
-            #if Subd.objects.filter(author=xyz).exists()==False:
+        # Uncomment above line to make it so only logged in users can post
+                #xyz=request.user
+            #if Suba.objects.filter(author=xyz).exists()==False:
                 form = SubdForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
@@ -227,23 +252,29 @@ def story4(request):
                     else:
                         _x = User.objects.get(username="Anonymous")
                         post.author = _x
-                    post.vote = 0
+                    post.vote = 1
                     post.save()
                     return redirect('story4')
             #else:
                 #return redirect('already')
         #else:
-            #return redirect('signup4')
+            #return redirect('signup1')
+            # uncomment above line to make it so only logged in users can post
     else:
         form = SubdForm()
-        zzz = Story4.objects.order_by('pk')
+        whole_story = Story4.objects.order_by('pk')
+        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
         _user = request.user.username
         _z = Textd.objects.filter(author__username=_user).count()
-        stake4 = "{0:.2f}%".format((_z / 500)*100)
+        # _z is the number of accepted submissions for this user
+        user_stake = "{0:.2f}%".format((_z / 500)*100)
+        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
         _y = Textd.objects.count()
-        progress4 =    "{0:.2f}%".format((_y / 450) * 100)
-        subd4 = Subd.objects.order_by('vote').reverse()
-        return render(request, 'project/story4.html', {'zzz': zzz, 'stake4': stake4, 'progress4': progress4, 'form': form, 'subd4':subd4})
+        # Number of total accepted submissions so far
+        progress =    "{0:.2f}%".format((_y / 450) * 100)
+        submissions_by_vote = Subd.objects.order_by('vote').reverse()
+        #all present submissions ordered by number of votes
+        return render(request, 'project/story4.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
 
 # -------------------------------------------
 
