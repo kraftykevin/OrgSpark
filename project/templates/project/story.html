@@ -30,12 +30,13 @@
 
 
 <h1> Vote here.  </h1>
-Vote every hour at :00 minutes, if there are less than four votes or a tie voting continues and you can vote again. </p>
+Vote every hour at :00 minutes, if there are less than four votes or a tie voting
+continues and you can vote again. </p>
 
 {% for Submission in submissions_by_vote %}
     <div>
       <p>________________________________________________________</p>
-        <p><a href="{{slug}}/{{ Submission.id }}">Vote:</a> {{ Submission.vote }}</p>
+        <p><a href="/vote/{{ Submission.id }}">Vote:</a> {{ Submission.vote }}</p>
         <p>Author: {{ Submission.author }}</p>
         <p>Start of new paragraph? {{ Submission.paragraph|yesno:"Yes,No" }}
         <p>Submission: {{ Submission.text }}</p>

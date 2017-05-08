@@ -120,25 +120,26 @@ def story(request, slug):
 
 
 
-def vote(request, slug, Submission_id):
+def vote(request, Submission_id):
     # This function allows folks to vote.
     if request.user.is_authenticated:
-        if Suba.objects.filter(pk=Submission_id).exists():
-            xyz = request.user
-            _x = Suba.objects.get(pk=Submission_id)
-            if _x.author != xyz:
-                if Voted1.objects.filter(voter=xyz).exists()==False:
-                    _x = Suba.objects.get(pk=Submission_id)
+        if Submission.objects.filter(pk=Submission_id).exists():
+            _user = request.user
+            _x = Submission.objects.get(pk=Submission_id)
+            if _x.author != _user:
+                #if Voted1.objects.filter(voter=_user).exists()==False:
                     _x.vote += 1
                     _x.save()
-                    Voted1.objects.create(voter=xyz, voted=True)
+                    #Voted1.objects.create(voter=_user, voted=True)
+                    _y=_x.story
+                    slug=_y.slug
                     return redirect('story', slug=slug)
-                else:
-                    return redirect('alreadyvoted')
+                #else:
+                    #return redirect('alreadyvoted')
             else:
                 return redirect('nicetry')
         else:
-            return redirect('story', slug=slug)
+            return redirect('home') #just in case user clicks vote after Calcvote has occured
     else:
         return redirect('signup1')
 
