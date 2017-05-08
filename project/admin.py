@@ -1,17 +1,7 @@
 from django.contrib import admin
-from .models import Texta, Textb, Textc, Textd, Suba, Subb, Subc, Subd, Story1, Story2, Story3, Story4
+from .models import Story, Submission, Story_by_submission, Story_by_paragraph
 
-admin.site.register(Texta)
-admin.site.register(Textb)
-admin.site.register(Textc)
-admin.site.register(Textd)
-
-admin.site.register(Suba)
-admin.site.register(Subb)
-admin.site.register(Subc)
-admin.site.register(Subd)
-
-admin.site.register(Story1)
-admin.site.register(Story2)
-admin.site.register(Story3)
-admin.site.register(Story4)
+admin.site.register(Story)
+admin.site.register(Submission)
+admin.site.register(Story_by_submission)
+admin.site.register(Story_by_paragraph)

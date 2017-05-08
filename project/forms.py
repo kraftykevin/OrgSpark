@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, CheckboxInput, EmailField
-from .models import Suba, Subb, Subc, Subd
+from .models import Submission
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
@@ -19,9 +19,9 @@ class UserCreateForm(UserCreationForm):
             user.save()
         return user
 
-class SubaForm(ModelForm):
+class SubmissionForm(ModelForm):
     class Meta:
-        model = Suba
+        model = Submission
         fields = ('text', 'paragraph',)
         widgets = {
             'text': Textarea(attrs={'cols': 80, 'rows': 10}),
@@ -32,7 +32,7 @@ class SubaForm(ModelForm):
 
 # copy paste code past this point.  DRY out.
 
-
+"""
 class SubbForm(ModelForm):
     class Meta:
         model = Subb
@@ -59,3 +59,5 @@ class SubdForm(ModelForm):
             'text': Textarea(attrs={'cols': 80, 'rows': 10}),
             'paragraph': CheckboxInput()
         }
+
+"""

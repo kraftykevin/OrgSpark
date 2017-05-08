@@ -12,9 +12,9 @@ Congresswoman Michaels, herself just elected, never applied for the job ….</p>
 
 
 <div style="height:350px;width:800px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
-{% for story1 in whole_story %}
+{% for Story_by_paragraph in whole_story %}
     <div>
-        <p>{{ story1.text }}</p>
+        <p>{{ Story_by_paragraph.text }}</p>
     </div>
 {% endfor %}
 </div>
@@ -36,13 +36,13 @@ Congresswoman Michaels, herself just elected, never applied for the job ….</p>
 <h1> Vote here.  </h1>
 Vote every hour at :00 minutes, if there are less than four votes or a tie voting continues and you can vote again. </p>
 
-{% for suba in submissions_by_vote %}
+{% for Submission in submissions_by_vote %}
     <div>
       <p>________________________________________________________</p>
-        <p><a href="vote1/{{ suba.id }}">Vote:</a> {{ suba.vote }}</p>
-        <p>Author: {{ suba.author }}</p>
-        <p>Start of new paragraph? {{ suba.paragraph|yesno:"Yes,No" }}
-        <p>Submission: {{ suba.text }}</p>
+        <p><a href="vote1/{{ suba.id }}">Vote:</a> {{ Submission.vote }}</p>
+        <p>Author: {{ Submission.author }}</p>
+        <p>Start of new paragraph? {{ Submission.paragraph|yesno:"Yes,No" }}
+        <p>Submission: {{ Submission.text }}</p>
 
     </div>
 {% endfor %}

@@ -2,8 +2,8 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Texta, Textb, Textc, Textd, Suba, Subb, Subc, Subd, Voted1, Voted2, Voted3, Voted4, Story1, Story2, Story3, Story4
-from .forms import SubaForm, SubbForm, SubcForm, SubdForm, UserCreateForm
+from .models import Story, Submission, Story_by_submission, Story_by_paragraph
+from .forms import SubmissionForm, UserCreateForm
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
@@ -70,49 +70,63 @@ def signup(request):
 
 
 
-def story1(request):
+def story(request, slug):
     """
     This function is the story for a page.  It includes rendering the story,
     a place to post new text, and rendering submissions.
     """
+    _x = Story.objects.get(slug=slug)
     if request.method == "POST":
         #if request.user.is_authenticated:
         # Uncomment above line to make it so only logged in users can post
                 #xyz=request.user
             #if Suba.objects.filter(author=xyz).exists()==False:
-                form = SubaForm(request.POST)
+                form = SubmissionForm(request.POST)
                 if form.is_valid():
                     post = form.save(commit=False)
                     if request.user.is_authenticated:
                         post.author = request.user
                     else:
-                        _x = User.objects.get(username="Anonymous")
-                        post.author = _x
+                        _anon = User.objects.get(username="Anonymous")
+                        post.author = _anon
                     post.vote = 1
+                    post.story = _x
                     post.save()
-                    return redirect('story1')
+                    return redirect('story', slug=slug)
             #else:
                 #return redirect('already')
         #else:
             #return redirect('signup1')
             # uncomment above line to make it so only logged in users can post
     else:
-        form = SubaForm()
-        whole_story = Story1.objects.order_by('pk')
-        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
+        form = SubmissionForm()
+
         _user = request.user.username
-        _z = Texta.objects.filter(author__username=_user).count()
-        # _z is the number of accepted submissions for this user
-        user_stake = "{0:.2f}%".format((_z / 500)*100)
-        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
-        _y = Texta.objects.count()
-        # Number of total accepted submissions so far
-        progress =    "{0:.2f}%".format((_y / 450) * 100)
-        submissions_by_vote = Suba.objects.order_by('vote').reverse()
+
+
+
+        whole_story = Story_by_paragraph.objects.filter(story=_x).order_by('pk')
+        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
+
+        submissions_by_vote = Submission.objects.filter(story=_x).order_by('vote').reverse()
         #all present submissions ordered by number of votes
-        return render(request, 'project/story1.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
+
+        #_z = Story_by_submission.objects.filter(story=_x)(author__username=_user).count()
+        # _z is the number of accepted submissions for this user
+        # would need to figure out how to pass multiple arguments to Django's filter()
+        #user_stake = "{0:.2f}%".format((_z / 500)*100)
+        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
+        # Need to changed based on muse owning some too.
+
+        _y = Story_by_submission.objects.filter(story=_x).count()
+        progress = "{0:.2f}%".format((_y / 450) * 100)
+
+        # need to re-add in 'user_stake':user_stake, below
+        return render(request, 'project/story.html', {'whole_story': whole_story, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
 
 
+
+"""
 def vote1(request, suba_id):
     # This function allows folks to vote.
     if request.user.is_authenticated:
@@ -136,21 +150,21 @@ def vote1(request, suba_id):
         return redirect('signup1')
 
 
+"""
 
 
 
 
-
-
+"""
 
 
 # everything past here is just copy code, figure out how to dry it out!
 
 def story2(request):
-    """
-    This function is the story for a page.  It includes rendering the story,
-    a place to post new text, and rendering submissions.
-    """
+
+    #This function is the story for a page.  It includes rendering the story,
+    #a place to post new text, and rendering submissions.
+
     if request.method == "POST":
         #if request.user.is_authenticated:
         # Uncomment above line to make it so only logged in users can post
@@ -191,10 +205,9 @@ def story2(request):
 
 
 def story3(request):
-    """
-    This function is the story for a page.  It includes rendering the story,
-    a place to post new text, and rendering submissions.
-    """
+
+    #This function is the story for a page.  It includes rendering the story,
+    #a place to post new text, and rendering submissions.
     if request.method == "POST":
         #if request.user.is_authenticated:
         # Uncomment above line to make it so only logged in users can post
@@ -235,10 +248,10 @@ def story3(request):
 
 
 def story4(request):
-    """
-    This function is the story for a page.  It includes rendering the story,
-    a place to post new text, and rendering submissions.
-    """
+
+    #This function is the story for a page.  It includes rendering the story,
+    #a place to post new text, and rendering submissions.
+
     if request.method == "POST":
         #if request.user.is_authenticated:
         # Uncomment above line to make it so only logged in users can post
@@ -276,7 +289,13 @@ def story4(request):
         #all present submissions ordered by number of votes
         return render(request, 'project/story4.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
 
+
+"""
+
 # -------------------------------------------
+
+"""
+
 
 def vote2(request, subb_id):
     if request.user.is_authenticated:
@@ -346,11 +365,11 @@ def vote4(request, subd_id):
         return redirect('signup1')
 
 
-
+"""
 
 #________________________________
 
-
+"""
 def calcvote1():
     print("Running calcvote1")
     x = Suba.objects.order_by('vote').last()
@@ -484,3 +503,5 @@ def calcvote4():
             story4lastentry.text=str(story4lastentry.text)+"  "+str(lastentry.text)
             story4lastentry.save()
             return
+
+"""
