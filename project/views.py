@@ -77,33 +77,21 @@ def story(request, slug):
     """
     _x = Story.objects.get(slug=slug)
     if request.method == "POST":
-        #if request.user.is_authenticated:
-        # Uncomment above line to make it so only logged in users can post
-                #xyz=request.user
-            #if Suba.objects.filter(author=xyz).exists()==False:
-                form = SubmissionForm(request.POST)
-                if form.is_valid():
-                    post = form.save(commit=False)
-                    if request.user.is_authenticated:
-                        post.author = request.user
-                    else:
-                        _anon = User.objects.get(username="Anonymous")
-                        post.author = _anon
-                    post.vote = 1
-                    post.story = _x
-                    post.save()
-                    return redirect('story', slug=slug)
-            #else:
-                #return redirect('already')
-        #else:
-            #return redirect('signup1')
-            # uncomment above line to make it so only logged in users can post
+        form = SubmissionForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            if request.user.is_authenticated:
+                post.author = request.user
+            else:
+                _anon = User.objects.get(username="Anonymous")
+                post.author = _anon
+            post.vote = 1
+            post.story = _x
+            post.save()
+            return redirect('story', slug=slug)
     else:
         form = SubmissionForm()
-
         _user = request.user.username
-
-
 
         whole_story = Story_by_paragraph.objects.filter(story=_x).order_by('pk')
         #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
@@ -121,36 +109,41 @@ def story(request, slug):
         _y = Story_by_submission.objects.filter(story=_x).count()
         progress = "{0:.2f}%".format((_y / 450) * 100)
 
+        prompt = _x.prompt
+        title = _x.title
+
         # need to re-add in 'user_stake':user_stake, below
-        return render(request, 'project/story.html', {'whole_story': whole_story, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
+        return render(request, 'project/story.html', {'whole_story': whole_story,
+        'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote,
+        'prompt': prompt, 'title': title, 'slug': slug})
 
 
 
-"""
-def vote1(request, suba_id):
+
+def vote(request, slug, Submission_id):
     # This function allows folks to vote.
     if request.user.is_authenticated:
-        if Suba.objects.filter(pk=suba_id).exists():
+        if Suba.objects.filter(pk=Submission_id).exists():
             xyz = request.user
-            subas = Suba.objects.get(pk=suba_id)
-            if subas.author != xyz:
+            _x = Suba.objects.get(pk=Submission_id)
+            if _x.author != xyz:
                 if Voted1.objects.filter(voter=xyz).exists()==False:
-                    suba = Suba.objects.get(pk=suba_id)
-                    suba.vote += 1
-                    suba.save()
+                    _x = Suba.objects.get(pk=Submission_id)
+                    _x.vote += 1
+                    _x.save()
                     Voted1.objects.create(voter=xyz, voted=True)
-                    return redirect('story1')
+                    return redirect('story', slug=slug)
                 else:
                     return redirect('alreadyvoted')
             else:
                 return redirect('nicetry')
         else:
-            return redirect('story1')
+            return redirect('story', slug=slug)
     else:
         return redirect('signup1')
 
 
-"""
+
 
 
 

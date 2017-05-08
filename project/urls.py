@@ -22,7 +22,7 @@ urlpatterns = [
 
 
 
-    #url(r'^story1/vote1/(?P<suba_id>[0-9]+)/$', views.vote1, name='vote1'),
+    url(r'^(?P<Submission_id>[0-9]+)/$', views.vote, name='vote'),
 
     url(r'^(?P<slug>.+)/$', views.story, name='story'),
 

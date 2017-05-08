@@ -2,13 +2,9 @@
 
 {% block content %}
 
-<h1> Condor 7 </h1>
+<h1> {{title}} </h1>
 
-<p> The year is 2040.  Artificial Intelligence has progressed faster than humanity could have ever predicted.
-"Condor 7" was just elected by an overwhelming majority following yet another disastrous human president.
-Jessica Michaels is a first-term Congresswoman, complete political outsider, and outspoken critic of AI.
-Condor 7 publicly announces that Congresswoman-Elect Michaels has been offered the powerful job of Chief of Staff to the President.
-Congresswoman Michaels, herself just elected, never applied for the job ….</p>
+<p> {{prompt}} </p>
 
 
 <div style="height:350px;width:800px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
@@ -39,7 +35,7 @@ Vote every hour at :00 minutes, if there are less than four votes or a tie votin
 {% for Submission in submissions_by_vote %}
     <div>
       <p>________________________________________________________</p>
-        <p><a href="vote1/{{ suba.id }}">Vote:</a> {{ Submission.vote }}</p>
+        <p><a href="{{slug}}/{{ Submission.id }}">Vote:</a> {{ Submission.vote }}</p>
         <p>Author: {{ Submission.author }}</p>
         <p>Start of new paragraph? {{ Submission.paragraph|yesno:"Yes,No" }}
         <p>Submission: {{ Submission.text }}</p>
