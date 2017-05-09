@@ -11,7 +11,8 @@ from django.core.mail import send_mail
 
 # home goes to the home page
 def home(request):
-    return render(request, 'project/home.html', {})
+    all_stories = Story.objects.order_by('popularity')
+    return render(request, 'project/home.html', {'all_stories' : all_stories})
 
 def nicetry(request):
     return render(request, 'project/nicetry.html', {})

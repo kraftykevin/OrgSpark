@@ -8,6 +8,7 @@ class Story(models.Model):
     muse = models.ForeignKey('auth.User')
     prompt = models.CharField(max_length=1000)
     slug = models.SlugField('slug', max_length=100, unique=True)
+    popularity = models.IntegerField()
     #minimum_votes = models.IntegerField()
     #vote_frequency = models.IntegerField()
     #max_submission_length = models.IntegerField() - would need to give max/min int
@@ -28,7 +29,6 @@ class Story_by_submission(models.Model):
     vote = models.IntegerField(default=0)
     paragraph = models.BooleanField(default=False)
     story = models.ForeignKey(Story)
-    # using pk value for num added
     def __str__(self):
         return self.text
 

@@ -5,24 +5,15 @@
       Submit the next piece of the story and vote to decide what comes next.
       We’ll track how much of each story is yours.  </h2>
     <p>Pick a story and contribute!</p>
-    <p>________________________________________________________</p>
-    <h1><a href="/story1">Condor 7</a></h1>
-    <p> The year is 2040.  Artificial Intelligence has progressed faster than humanity could have ever predicted.
-    "Condor 7" was just elected by an overwhelming majority following yet another disastrous human president.
-    Jessica Michaels is a first-term Congresswoman, complete political outsider, and outspoken critic of AI.
-    Condor 7 publicly announces that Congresswoman-Elect Michaels has been offered the powerful job of Chief of Staff to the President.
-    Congresswoman Michaels, herself just elected, never applied for the job ….</p>
-    <p>________________________________________________________</p>
-    <h1><a href="/story2">Gisgo</a></h1>
-    <p>The 216 BC defeat of the Roman army in Apulia, by the army of Carthage, under Hannibal,
-    is regarded both as one of the greatest tactical feats in military history and as one of the worst defeats in Roman history.
-    This is the lost story of one small band led by Gisgo.
-    Without their rogue missions the army of Carthage would have lost. </p>
-    <p>________________________________________________________</p>
-    <h1><a href="/story3">The Gem of Nye</a></h1>
-    <p> Four factions with powers which match the elements; Earth, Wind, Water and Fire battle for control of the Legendary Gem of Nye.
-    Whoever controls the Gem of Nye rules the planet.</p>
-    <p>________________________________________________________</p>
-    <h1><a href="/story4">Aaron's Tale</a></h1>
-    <p> We see humanity through the eyes of Aaron, in the year 4024….</p>
+
+
+    {% for Story in all_stories %}
+        <p>________________________________________________________</p>
+        <h1><a href="/{{Story.slug}}">{{Story.title}}</a></h1>
+        <p> {{Story.prompt}}</p>
+
+    {% endfor %}
+
+
+
 {% endblock %}
