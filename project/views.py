@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 
 # home goes to the home page
 def home(request):
-    all_stories = Story.objects.order_by('popularity')
+    all_stories = Story.objects.order_by('popularity').reverse()
     return render(request, 'project/home.html', {'all_stories' : all_stories})
 
 def nicetry(request):
@@ -29,7 +29,6 @@ def signup1(request):
 def signup2(request):
     return render(request, 'registration/signup2.html', {})
 
-
 def already3(request):
     return render(request, 'project/already3.html', {})
 
@@ -40,8 +39,6 @@ def activate(request):
 	user.is_active=True
 	user.save()
 	return render(request,'registration/activation.html')
-
-
 
 def signup(request):
     # This function creates a new user and sends them an activation email.
@@ -128,19 +125,23 @@ def vote(request, Submission_id):
             _user = request.user
             _x = Submission.objects.get(pk=Submission_id)
             if _x.author != _user:
-                #if Voted1.objects.filter(voter=_user).exists()==False:
+                _y=_x.story
+                slug=_y.slug
+                _z=_y.voted
+                if _z.filter(id=_user.id).exists():
+                    return redirect('alreadyvoted')
+                else:
                     _x.vote += 1
                     _x.save()
-                    #Voted1.objects.create(voter=_user, voted=True)
-                    _y=_x.story
-                    slug=_y.slug
+                    _y.popularity += 1
+                    _y.voted.add(_user)
+                    _y.save()
                     return redirect('story', slug=slug)
-                #else:
-                    #return redirect('alreadyvoted')
             else:
                 return redirect('nicetry')
         else:
-            return redirect('home') #just in case user clicks vote after Calcvote has occured
+            return redirect('home')
+            #just in case user clicks vote after Calcvote has occured
     else:
         return redirect('signup1')
 
@@ -149,220 +150,6 @@ def vote(request, Submission_id):
 
 
 
-
-"""
-
-
-# everything past here is just copy code, figure out how to dry it out!
-
-def story2(request):
-
-    #This function is the story for a page.  It includes rendering the story,
-    #a place to post new text, and rendering submissions.
-
-    if request.method == "POST":
-        #if request.user.is_authenticated:
-        # Uncomment above line to make it so only logged in users can post
-                #xyz=request.user
-            #if Suba.objects.filter(author=xyz).exists()==False:
-                form = SubbForm(request.POST)
-                if form.is_valid():
-                    post = form.save(commit=False)
-                    if request.user.is_authenticated:
-                        post.author = request.user
-                    else:
-                        _x = User.objects.get(username="Anonymous")
-                        post.author = _x
-                    post.vote = 1
-                    post.save()
-                    return redirect('story2')
-            #else:
-                #return redirect('already')
-        #else:
-            #return redirect('signup1')
-            # uncomment above line to make it so only logged in users can post
-    else:
-        form = SubbForm()
-        whole_story = Story2.objects.order_by('pk')
-        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
-        _user = request.user.username
-        _z = Textb.objects.filter(author__username=_user).count()
-        # _z is the number of accepted submissions for this user
-        user_stake = "{0:.2f}%".format((_z / 500)*100)
-        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
-        _y = Textb.objects.count()
-        # Number of total accepted submissions so far
-        progress = "{0:.2f}%".format((_y / 450) * 100)
-        submissions_by_vote = Subb.objects.order_by('vote').reverse()
-        #all present submissions ordered by number of votes
-        return render(request, 'project/story2.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
-
-
-
-def story3(request):
-
-    #This function is the story for a page.  It includes rendering the story,
-    #a place to post new text, and rendering submissions.
-    if request.method == "POST":
-        #if request.user.is_authenticated:
-        # Uncomment above line to make it so only logged in users can post
-                #xyz=request.user
-            #if Suba.objects.filter(author=xyz).exists()==False:
-                form = SubcForm(request.POST)
-                if form.is_valid():
-                    post = form.save(commit=False)
-                    if request.user.is_authenticated:
-                        post.author = request.user
-                    else:
-                        _x = User.objects.get(username="Anonymous")
-                        post.author = _x
-                    post.vote = 1
-                    post.save()
-                    return redirect('story3')
-            #else:
-                #return redirect('already')
-        #else:
-            #return redirect('signup1')
-            # uncomment above line to make it so only logged in users can post
-    else:
-        form = SubcForm()
-        whole_story = Story3.objects.order_by('pk')
-        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
-        _user = request.user.username
-        _z = Textc.objects.filter(author__username=_user).count()
-        # _z is the number of accepted submissions for this user
-        user_stake = "{0:.2f}%".format((_z / 500)*100)
-        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
-        _y = Textc.objects.count()
-        # Number of total accepted submissions so far
-        progress = "{0:.2f}%".format((_y / 450) * 100)
-        submissions_by_vote = Subc.objects.order_by('vote').reverse()
-        #all present submissions ordered by number of votes
-        return render(request, 'project/story3.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
-
-
-
-def story4(request):
-
-    #This function is the story for a page.  It includes rendering the story,
-    #a place to post new text, and rendering submissions.
-
-    if request.method == "POST":
-        #if request.user.is_authenticated:
-        # Uncomment above line to make it so only logged in users can post
-                #xyz=request.user
-            #if Suba.objects.filter(author=xyz).exists()==False:
-                form = SubdForm(request.POST)
-                if form.is_valid():
-                    post = form.save(commit=False)
-                    if request.user.is_authenticated:
-                        post.author = request.user
-                    else:
-                        _x = User.objects.get(username="Anonymous")
-                        post.author = _x
-                    post.vote = 1
-                    post.save()
-                    return redirect('story4')
-            #else:
-                #return redirect('already')
-        #else:
-            #return redirect('signup1')
-            # uncomment above line to make it so only logged in users can post
-    else:
-        form = SubdForm()
-        whole_story = Story4.objects.order_by('pk')
-        #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
-        _user = request.user.username
-        _z = Textd.objects.filter(author__username=_user).count()
-        # _z is the number of accepted submissions for this user
-        user_stake = "{0:.2f}%".format((_z / 500)*100)
-        # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
-        _y = Textd.objects.count()
-        # Number of total accepted submissions so far
-        progress =    "{0:.2f}%".format((_y / 450) * 100)
-        submissions_by_vote = Subd.objects.order_by('vote').reverse()
-        #all present submissions ordered by number of votes
-        return render(request, 'project/story4.html', {'whole_story': whole_story, 'user_stake': user_stake, 'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote})
-
-
-"""
-
-# -------------------------------------------
-
-"""
-
-
-def vote2(request, subb_id):
-    if request.user.is_authenticated:
-        if Subb.objects.filter(pk=subb_id).exists():
-            xyz = request.user
-            subbs = Subb.objects.get(pk=subb_id)
-            if subbs.author != xyz:
-                if Voted2.objects.filter(voter=xyz).exists()==False:
-                    subb = Subb.objects.get(pk=subb_id)
-                    subb.vote += 1
-                    subb.save()
-                    Voted2.objects.create(voter=xyz, voted=True)
-                    return redirect('story2')
-                else:
-                    return redirect('alreadyvoted')
-            else:
-                return redirect('nicetry')
-        else:
-            return redirect('story2')
-    else:
-        return redirect('signup1')
-
-
-
-
-def vote3(request, subc_id):
-    if request.user.is_authenticated:
-        if Subc.objects.filter(pk=subc_id).exists():
-            xyz = request.user
-            subcs = Subc.objects.get(pk=subc_id)
-            if subcs.author != xyz:
-                if Voted3.objects.filter(voter=xyz).exists()==False:
-                    subc = Subc.objects.get(pk=subc_id)
-                    subc.vote += 1
-                    subc.save()
-                    Voted3.objects.create(voter=xyz, voted=True)
-                    return redirect('story3')
-                else:
-                    return redirect('alreadyvoted')
-            else:
-                return redirect('nicetry')
-        else:
-            return redirect('story3')
-    else:
-        return redirect('signup1')
-
-
-def vote4(request, subd_id):
-    if request.user.is_authenticated:
-        if Subd.objects.filter(pk=subd_id).exists():
-            xyz = request.user
-            subds = Subd.objects.get(pk=subd_id)
-            if subds.author != xyz:
-                if Voted4.objects.filter(voter=xyz).exists()==False:
-                    subd = Subd.objects.get(pk=subd_id)
-                    subd.vote += 1
-                    subd.save()
-                    Voted4.objects.create(voter=xyz, voted=True)
-                    return redirect('story4')
-                else:
-                    return redirect('alreadyvoted')
-            else:
-                return redirect('nicetry')
-        else:
-            return redirect('story4')
-    else:
-        return redirect('signup1')
-
-
-"""
-
-#________________________________
 
 """
 def calcvote1():
