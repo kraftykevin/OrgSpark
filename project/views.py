@@ -148,12 +148,10 @@ def vote(request, Submission_id):
 
 
 
-
-
-
 """
-def calcvote1():
-    print("Running calcvote1")
+
+def calcvote():
+    print("Running Calcvote!")
     x = Suba.objects.order_by('vote').last()
     if x == None:
         return
@@ -185,6 +183,9 @@ def calcvote1():
             return
             # removed z, moved story1lastentry creation up to, and keep zz.
 
+
+
+            
 
 def calcvote2():
     print("Running calcvote2")
