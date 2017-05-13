@@ -147,144 +147,33 @@ def vote(request, Submission_id):
 
 
 
-
-"""
-
-def calcvote():
-    print("Running Calcvote!")
-    x = Suba.objects.order_by('vote').last()
-    if x == None:
+def calcvote(calcvote_slug):
+    print("Running Calcvote")
+    calcvote_story = Story.objects.get(slug=calcvote_slug)
+    most_votes = Submission.objects.filter(story=voting_story).order_by('vote').last()
+    calcvote_vote_minimum = voting_story.vote_minimum
+    if most_votes == None:
         return
-    elif x.vote < 4: #need at least four votes
-        #Suba.objects.filter(vote__lt=x.vote).delete()
-        Voted1.objects.all().delete()
+    elif most_votes.count() > 1:
+        calcvote_story.voted.clear()
         return
-    elif Suba.objects.filter(vote=x.vote).count() > 1:
-        #Suba.objects.filter(vote__lt=x.vote).delete()
-        Voted1.objects.all().delete()
+    elif most_votes.vote < calcvote_vote_minimum:
+        calcvote_story.voted.clear()
         return
     else:
-        Texta.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
-        Suba.objects.all().delete()
-        Voted1.objects.all().delete()
-        lastentry=Texta.objects.order_by('pk').last()
-        story1lastentry = Story1.objects.order_by('pk').last()
-        zz = Story1.objects.all().count()
-        if zz == 0:
-            Story1.objects.create(text=lastentry.text)
+        calcvote_story.voted.clear()
+        Story_by_submission.objects.create(text=most_votes.text, author=most_votes.author, vote=most_votes.vote, paragraph=most_votes.paragraph, story=voting_story)
+        Submission.objects.filter(story=voting_story).delete()
+        last_entry = Story_by_submission.objects.filter(story=voting_story).order_by('pk').last()
+        last_paragraph = Story_by_paragraph.objects.filter(story=voting_story).order_by('pk').last()
+        _z = Story_by_submission.objects.filter(story=voting_story).count()
+        if _z == 0:
+            Story_by_paragraph.objects.create(text=last_entry.text, story=voting_story)
             return
-        elif lastentry.paragraph == True:
-            Story1.objects.create(text=lastentry.text)
+        elif last_entry.paragraph == True:
+            Story_by_paragraph.objects.create(text=lastentry.text, story=voting_story)
             return
-            #start new story1 object for new paragraph
         else:
-            story1lastentry.text=str(story1lastentry.text)+"  "+str(lastentry.text)
-            story1lastentry.save()
+            last_paragraph.text=str(last_paragraph.text)+"  "+str(last_entry.text)
+            last_paragraph.save()
             return
-            # removed z, moved story1lastentry creation up to, and keep zz.
-
-
-
-            
-
-def calcvote2():
-    print("Running calcvote2")
-    x = Subb.objects.order_by('vote').last()
-    if x == None:
-        return
-    elif x.vote < 4: #need at least four votes
-        #Subb.objects.filter(vote__lt=x.vote).delete()
-        Voted2.objects.all().delete()
-        return
-    elif Subb.objects.filter(vote=x.vote).count() > 1:
-        #Subb.objects.filter(vote__lt=x.vote).delete()
-        Voted2.objects.all().delete()
-        return
-    else:
-        Textb.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
-        Subb.objects.all().delete()
-        Voted2.objects.all().delete()
-        lastentry=Textb.objects.order_by('pk').last()
-        story2lastentry = Story2.objects.order_by('pk').last()
-        zz = Story2.objects.all().count()
-        if zz == 0:
-            Story2.objects.create(text=lastentry.text)
-            return
-        elif lastentry.paragraph == True:
-            Story2.objects.create(text=lastentry.text)
-            return
-            #start new story1 object for new paragraph
-        else:
-            story2lastentry.text=str(story2lastentry.text)+"  "+str(lastentry.text)
-            story2lastentry.save()
-            return
-
-
-
-def calcvote3():
-    print("Running calcvote3")
-    x = Subc.objects.order_by('vote').last()
-    if x == None:
-        return
-    elif x.vote < 4: #need at least four votes
-        #Subc.objects.filter(vote__lt=x.vote).delete()
-        Voted3.objects.all().delete()
-        return
-    elif Subc.objects.filter(vote=x.vote).count() > 1:
-        #Subc.objects.filter(vote__lt=x.vote).delete()
-        Voted3.objects.all().delete()
-        return
-    else:
-        Textc.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
-        Subc.objects.all().delete()
-        Voted3.objects.all().delete()
-        lastentry=Textc.objects.order_by('pk').last()
-        story3lastentry = Story3.objects.order_by('pk').last()
-        zz = Story3.objects.all().count()
-        if zz == 0:
-            Story3.objects.create(text=lastentry.text)
-            return
-        elif lastentry.paragraph == True:
-            Story3.objects.create(text=lastentry.text)
-            return
-            #start new story1 object for new paragraph
-        else:
-            story3lastentry.text=str(story3lastentry.text)+"  "+str(lastentry.text)
-            story3lastentry.save()
-            return
-
-
-
-def calcvote4():
-    print("Running calcvote4")
-    x = Subd.objects.order_by('vote').last()
-    if x == None:
-        return
-    elif x.vote < 4: #need at least four votes
-        #Subd.objects.filter(vote__lt=x.vote).delete()
-        Voted4.objects.all().delete()
-        return
-    elif Subd.objects.filter(vote=x.vote).count() > 1:
-        #Subd.objects.filter(vote__lt=x.vote).delete()
-        Voted4.objects.all().delete()
-        return
-    else:
-        Textd.objects.create(text=x.text, author=x.author, vote=x.vote, paragraph=x.paragraph)
-        Subd.objects.all().delete()
-        Voted4.objects.all().delete()
-        lastentry=Textd.objects.order_by('pk').last()
-        story4lastentry = Story4.objects.order_by('pk').last()
-        zz = Story4.objects.all().count()
-        if zz == 0:
-            Story4.objects.create(text=lastentry.text)
-            return
-        elif lastentry.paragraph == True:
-            Story4.objects.create(text=lastentry.text)
-            return
-            #start new story1 object for new paragraph
-        else:
-            story4lastentry.text=str(story4lastentry.text)+"  "+str(lastentry.text)
-            story4lastentry.save()
-            return
-
-"""

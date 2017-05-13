@@ -1,19 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 
 class Story(models.Model):
-    title = models.CharField('title', max_length=100)
+    title = models.CharField('title', max_length=100, unique=True)
     muse = models.ForeignKey('auth.User', related_name = 'muse')
     prompt = models.CharField(max_length=1000)
     slug = models.SlugField('slug', max_length=100, unique=True)
     popularity = models.IntegerField()
     voted = models.ManyToManyField('auth.User', related_name = 'voted')
+    finished_story = models.BooleanField(default=False)
+    vote_minimum = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(100)])
     #minimum_votes = models.IntegerField()
     #vote_frequency = models.IntegerField()
     #max_submission_length = models.IntegerField() - would need to give max/min int
-    #popularity (for ranking on front page)
 
 
 class Submission(models.Model):
@@ -39,10 +41,3 @@ class Story_by_paragraph(models.Model):
     story = models.ForeignKey(Story)
     def __str__(self):
         return self.text
-
-"""
-class Voted(models.Model):
-    voter = models.ForeignKey('auth.User')
-    voted = models.BooleanField(default=False)
-    story = models.ForeignKey(Story)
-"""
