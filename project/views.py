@@ -109,11 +109,12 @@ def story(request, slug):
 
         prompt = _x.prompt
         title = _x.title
+        muse = _x.muse
 
         # need to re-add in 'user_stake':user_stake, below
         return render(request, 'project/story.html', {'whole_story': whole_story,
         'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote,
-        'prompt': prompt, 'title': title, 'slug': slug})
+        'prompt': prompt, 'title': title, 'slug': slug, 'muse': muse})
 
 
 
@@ -147,31 +148,32 @@ def vote(request, Submission_id):
 
 
 
-def calcvote(calcvote_slug):
-    print("Running Calcvote")
-    calcvote_story = Story.objects.get(slug=calcvote_slug)
-    most_votes = Submission.objects.filter(story=voting_story).order_by('vote').last()
-    calcvote_vote_minimum = voting_story.vote_minimum
+def calcvote(pk):
+    calcvote_story = Story.objects.get(pk=pk)
+    _slug = calcvote_story.slug
+    print("Running Calcvote", _slug)
+    most_votes = Submission.objects.filter(story=calcvote_story).order_by('vote').last()
+    calcvote_vote_minimum = calcvote_story.vote_minimum
     if most_votes == None:
         return
-    elif most_votes.count() > 1:
+    elif Submission.objects.filter(vote=most_votes.vote).count() > 1:
         calcvote_story.voted.clear()
         return
-    elif most_votes.vote < calcvote_vote_minimum:
+    elif most_votes.vote <= calcvote_vote_minimum:
         calcvote_story.voted.clear()
         return
     else:
         calcvote_story.voted.clear()
-        Story_by_submission.objects.create(text=most_votes.text, author=most_votes.author, vote=most_votes.vote, paragraph=most_votes.paragraph, story=voting_story)
-        Submission.objects.filter(story=voting_story).delete()
-        last_entry = Story_by_submission.objects.filter(story=voting_story).order_by('pk').last()
-        last_paragraph = Story_by_paragraph.objects.filter(story=voting_story).order_by('pk').last()
-        _z = Story_by_submission.objects.filter(story=voting_story).count()
+        Story_by_submission.objects.create(text=most_votes.text, author=most_votes.author, vote=most_votes.vote, paragraph=most_votes.paragraph, story=calcvote_story)
+        Submission.objects.filter(story=calcvote_story).delete()
+        last_entry = Story_by_submission.objects.filter(story=calcvote_story).order_by('pk').last()
+        last_paragraph = Story_by_paragraph.objects.filter(story=calcvote_story).order_by('pk').last()
+        _z = Story_by_paragraph.objects.filter(story=calcvote_story).count()
         if _z == 0:
-            Story_by_paragraph.objects.create(text=last_entry.text, story=voting_story)
+            Story_by_paragraph.objects.create(text=last_entry.text, story=calcvote_story)
             return
         elif last_entry.paragraph == True:
-            Story_by_paragraph.objects.create(text=lastentry.text, story=voting_story)
+            Story_by_paragraph.objects.create(text=lastentry.text, story=calcvote_story)
             return
         else:
             last_paragraph.text=str(last_paragraph.text)+"  "+str(last_entry.text)

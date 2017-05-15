@@ -13,9 +13,7 @@ class Story(models.Model):
     voted = models.ManyToManyField('auth.User', related_name = 'voted')
     finished_story = models.BooleanField(default=False)
     vote_minimum = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(100)])
-    #minimum_votes = models.IntegerField()
-    #vote_frequency = models.IntegerField()
-    #max_submission_length = models.IntegerField() - would need to give max/min int
+    vote_frequency = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(1440)])
 
 
 class Submission(models.Model):

@@ -4,6 +4,8 @@
 
 <h1> {{title}} </h1>
 
+<p> Muse: {{muse}}</p>
+
 <p> {{prompt}} </p>
 
 
@@ -26,16 +28,15 @@
      {{ form }}
     <button type="submit" class="save btn btn-default">Save</button>
 </form>
-<p> Check this box if you are starting a new paragraph.</p>
+<p> Check this box to start a new paragraph.</p>
 
 
 <h1> Vote here.  </h1>
-Vote every hour at :00 minutes, if there are less than four votes or a tie voting
-continues and you can vote again. </p>
+<p> Next vote in X minutes.</p>
 
 {% for Submission in submissions_by_vote %}
     <div>
-      <p>________________________________________________________</p>
+      <p>____________________________________________________________________________</p>
         <p><a href="/vote/{{ Submission.id }}">Vote:</a> {{ Submission.vote }}</p>
         <p>Author: {{ Submission.author }}</p>
         <p>Start of new paragraph? {{ Submission.paragraph|yesno:"Yes,No" }}
