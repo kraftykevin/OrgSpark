@@ -17,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, **options):
         print("Hello World!")
         sched = BlockingScheduler()
-        @sched.scheduled_job('cron', minute='00')
+        @sched.scheduled_job('cron', minute='12')
         def scheduled_job():
             print("Updating calcvote jobs.")
 
@@ -31,6 +31,12 @@ class Command(BaseCommand):
 
 
 """
+Another option, add a bool flag for whether the timer is started..... Then, only
+need to go through active unstarted stories to trigger anything......
+Then, add to the final calcvote something that turns it on/off..... and removes the job...
+
+
+
 Another possiblity could be to define a function that triggers the beginning of voting, a
 and a function that ends it when things.  When a story posts, have the triggering
 function called, and when a story finished is True in calcvote, end the job...
