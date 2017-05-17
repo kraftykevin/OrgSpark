@@ -17,14 +17,16 @@ class Command(BaseCommand):
     def handle(self, **options):
         print("Hello World!")
         sched = BlockingScheduler()
-        @sched.scheduled_job('cron', minute='12')
+        @sched.scheduled_job('cron', minute='00')
         def scheduled_job():
             print("Updating calcvote jobs.")
 
-            active_stories = Story.objects.filter(finished_story=False)
+            active_stories = Story.objects.filter(calcvote_started=False)
 
             for _x in active_stories:
-                sched.add_job(calcvote, 'interval', minutes=_x.minutes_between_votes, args=[_x.pk])
+                sched.add_job(calcvote, 'interval', minutes=_x.minutes_between_votes, replace_existing=True, id=_x.slug, args=[_x.pk])
+                _x.calcvote_started = True
+                _x.save()
         sched.start()
         while True:
             time.sleep(15)

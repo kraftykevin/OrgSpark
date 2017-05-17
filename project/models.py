@@ -14,6 +14,7 @@ class Story(models.Model):
     finished_story = models.BooleanField(default=False)
     minimum_votes = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(100)])
     minutes_between_votes = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(60)])
+    calcvote_started = models.BooleanField(default=False)
 
 class Submission(models.Model):
     author = models.ForeignKey('auth.User')
