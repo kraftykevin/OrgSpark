@@ -24,7 +24,7 @@ class Command(BaseCommand):
             active_stories = Story.objects.filter(finished_story=False)
 
             for _x in active_stories:
-                sched.add_job(calcvote, 'interval', minutes=_x.vote_frequency, args=[_x.pk])
+                sched.add_job(calcvote, 'interval', minutes=_x.minutes_between_votes, args=[_x.pk])
         sched.start()
         while True:
             time.sleep(15)
@@ -39,21 +39,4 @@ is likely ineffecient
 In addition, I worry about calling add job on a story that already has an internval
 of calcvote going, would they conflict, would it go with the new one and kill the old one?
 
-"""
-
-"""
-
-class Command(BaseCommand):
-    help = "Sets a worker to complete the scheduled calcvote functions"
-    requires_model_validation = False
-    can_import_settings = True
-
-    def handle(self, **options):
-        print("Hello World!")
-        sched = BlockingScheduler()
-        sched.add_job(calcvote, 'interval', minute=_frequency)
-        sched.start()
-
-        while True:
-            time.sleep(10)
 """

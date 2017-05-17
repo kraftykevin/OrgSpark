@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, CheckboxInput, EmailField
-from .models import Submission
+from .models import Submission, Story
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
@@ -30,34 +30,13 @@ class SubmissionForm(ModelForm):
 
 
 
-# copy paste code past this point.  DRY out.
-
-"""
-class SubbForm(ModelForm):
+class New_story_form(ModelForm):
     class Meta:
-        model = Subb
-        fields = ('text', 'paragraph',)
+        model = Story
+        fields = ('title', 'prompt', 'minimum_votes', 'minutes_between_votes')
         widgets = {
-            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
-            'paragraph': CheckboxInput()
+            'title': Textarea(attrs={'cols': 80, 'rows': 2}),
+            'prompt': Textarea(attrs={'cols': 80, 'rows': 10}),
+            'minimum_votes': Textarea(attrs={'cols': 80, 'rows': 2}),
+            'minutes_between_votes': Textarea(attrs={'cols': 80, 'rows': 2}),
         }
-
-class SubcForm(ModelForm):
-    class Meta:
-        model = Subc
-        fields = ('text', 'paragraph',)
-        widgets = {
-            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
-            'paragraph': CheckboxInput()
-        }
-
-class SubdForm(ModelForm):
-    class Meta:
-        model = Subd
-        fields = ('text', 'paragraph',)
-        widgets = {
-            'text': Textarea(attrs={'cols': 80, 'rows': 10}),
-            'paragraph': CheckboxInput()
-        }
-
-"""

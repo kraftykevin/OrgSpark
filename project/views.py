@@ -3,9 +3,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Story, Submission, Story_by_submission, Story_by_paragraph
-from .forms import SubmissionForm, UserCreateForm
+from .forms import SubmissionForm, UserCreateForm, New_story_form
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+import datetime
+from django.template.defaultfilters import slugify
 
 
 
@@ -76,7 +78,7 @@ def story(request, slug):
     _x = Story.objects.get(slug=slug)
     if request.method == "POST":
         form = SubmissionForm(request.POST)
-        if form.is_valid():
+        if form.is_valid(): #it appears no else to go with this if, need an error page?
             post = form.save(commit=False)
             if request.user.is_authenticated:
                 post.author = request.user
@@ -148,18 +150,48 @@ def vote(request, Submission_id):
 
 
 
+
+
+def newstory(request):
+    if request.method == "POST":
+        form = New_story_form(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.muse = request.user
+            slug = slugify(post.title)
+            post.slug = slug
+            post.save()
+            return redirect('story', slug=slug)
+
+
+
+    else:
+        if request.user.is_authenticated:
+            form = New_story_form()
+            return render (request, 'project/newstory.html', {'form': form})
+        else:
+            return redirect('signup1')
+
+
+
+
+
+
+
+
 def calcvote(pk):
     calcvote_story = Story.objects.get(pk=pk)
     _slug = calcvote_story.slug
-    print("Running Calcvote", _slug)
+    now = datetime.datetime.now()
+    print("Running Calcvote", _slug, "at", datetime.time(now.hour, now.minute, now.second))
     most_votes = Submission.objects.filter(story=calcvote_story).order_by('vote').last()
-    calcvote_vote_minimum = calcvote_story.vote_minimum
+    calcvote_minimum_votes = calcvote_story.minimum_votes
     if most_votes == None:
         return
     elif Submission.objects.filter(vote=most_votes.vote).count() > 1:
         calcvote_story.voted.clear()
         return
-    elif most_votes.vote <= calcvote_vote_minimum:
+    elif most_votes.vote <= calcvote_minimum_votes:
         calcvote_story.voted.clear()
         return
     else:

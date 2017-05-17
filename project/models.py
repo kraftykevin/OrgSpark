@@ -9,12 +9,12 @@ class Story(models.Model):
     muse = models.ForeignKey('auth.User', related_name = 'muse')
     prompt = models.CharField(max_length=1000)
     slug = models.SlugField('slug', max_length=100, unique=True)
-    popularity = models.IntegerField()
+    popularity = models.IntegerField(default=0)
     voted = models.ManyToManyField('auth.User', related_name = 'voted')
     finished_story = models.BooleanField(default=False)
-    vote_minimum = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(100)])
-    vote_frequency = models.IntegerField(validators=[MinValueValidator(5), MaxValueValidator(1440)])
-
+    minimum_votes = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(100)])
+    minutes_between_votes = models.IntegerField(validators=[MinValueValidator(3), MaxValueValidator(60)])
+    # vote_frequency becomes minutes_between_votes
 
 class Submission(models.Model):
     author = models.ForeignKey('auth.User')
