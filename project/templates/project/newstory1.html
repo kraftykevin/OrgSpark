@@ -1,0 +1,23 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2> Try again, follow the directions below. </h2> 
+<p> Write a title of no more than 100 characters.</p>
+<p> Write a prompt of no more than 1000 characters. </p>
+<p> For minimum votes, enter a number between 3 and 100 for how many votes a submission
+needs to become a part of this story. </p>
+<p> For minutes between votes, enter a number between 3 and 60 for how many minutes
+between each vote.  </p>
+
+
+<form method="POST" class="post-form">
+    {% csrf_token %}
+     {{ form }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+
+
+
+
+{% endblock %}

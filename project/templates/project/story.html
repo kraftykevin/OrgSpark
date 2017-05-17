@@ -1,0 +1,49 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h1> {{story.title}} </h1>
+
+<p> Muse: {{story.muse}}</p>
+
+<p> {{story.prompt}} </p>
+
+
+<div style="height:350px;width:800px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+{% for Story_by_paragraph in whole_story %}
+    <div>
+        <p>{{Story_by_paragraph.text}}</p>
+    </div>
+{% endfor %}
+</div>
+
+<p> This story is {{progress}} complete.  </p>
+
+<p> You own {{user_stake}} of this story so far.</p>
+
+<p>Add to the story here. </p>
+
+<form method="POST" class="post-form">
+    {% csrf_token %}
+     {{ form }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+<p> Check this box to start a new paragraph.</p>
+
+
+<h1> Vote here.  </h1>
+<p> Submissions need at least {{story.minimum_votes}} votes to become part of this story. </p>
+<p> Votes calculated every {{story.minutes_between_votes}} minutes for this story.</p>
+
+{% for Submission in submissions_by_vote %}
+    <div>
+      <p>____________________________________________________________________________</p>
+        <p><a href="/vote/{{ Submission.id }}">Vote:</a> {{ Submission.vote }}</p>
+        <p>Author: {{ Submission.author }}</p>
+        <p>Start of new paragraph? {{ Submission.paragraph|yesno:"Yes,No" }}
+        <p>Submission: {{ Submission.text }}</p>
+
+    </div>
+{% endfor %}
+
+{% endblock %}
