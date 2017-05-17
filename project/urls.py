@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^alreadyvoted/$', views.alreadyvoted, name='alreadyvoted'),
     url(r'^nicetry/$', views.nicetry, name='nicetry'),
     url(r'^newstory/$', views.newstory, name='newstory'),
+    url(r'^newstory1/$', views.newstory1, name='newstory1'),
     url(r'^register_activate/activation/',views.activate, name='activation'),
     url(r'^vote/(?P<Submission_id>[0-9]+)/$', views.vote, name='vote'),
     url(r'^(?P<slug>.+)/$', views.story, name='story'),

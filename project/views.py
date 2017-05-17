@@ -92,31 +92,24 @@ def story(request, slug):
     else:
         form = SubmissionForm()
         _user = request.user.username
-
         whole_story = Story_by_paragraph.objects.filter(story=_x).order_by('pk')
         #above line orders the model where each object is a paragraph by ID and places it in whole_story variable
-
         submissions_by_vote = Submission.objects.filter(story=_x).order_by('vote').reverse()
         #all present submissions ordered by number of votes
+        accepted_submissions = Story_by_submission.objects.filter(story=_x).filter(author__username=_user).count()
 
-        #_z = Story_by_submission.objects.filter(story=_x)(author__username=_user).count()
-        # _z is the number of accepted submissions for this user
-        # would need to figure out how to pass multiple arguments to Django's filter()
-        #user_stake = "{0:.2f}%".format((_z / 500)*100)
+
+        user_stake = "{0:.2f}%".format((accepted_submissions / 500)*100)
+
         # percent of users stake in the story assuming 450 submissions and 50 OrgSpark owned
         # Need to changed based on muse owning some too.
-
         _y = Story_by_submission.objects.filter(story=_x).count()
         progress = "{0:.2f}%".format((_y / 450) * 100)
-
-        prompt = _x.prompt
-        title = _x.title
-        muse = _x.muse
-
+        story = _x
         # need to re-add in 'user_stake':user_stake, below
         return render(request, 'project/story.html', {'whole_story': whole_story,
         'progress': progress, 'form': form, 'submissions_by_vote': submissions_by_vote,
-        'prompt': prompt, 'title': title, 'slug': slug, 'muse': muse})
+         'slug': slug, 'story': story, 'user_stake': user_stake})
 
 
 
@@ -162,9 +155,8 @@ def newstory(request):
             post.slug = slug
             post.save()
             return redirect('story', slug=slug)
-
-
-
+        else:
+            return redirect('newstory1')
     else:
         if request.user.is_authenticated:
             form = New_story_form()
@@ -172,7 +164,24 @@ def newstory(request):
         else:
             return redirect('signup1')
 
-
+def newstory1(request):
+    if request.method == "POST":
+        form = New_story_form(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.muse = request.user
+            slug = slugify(post.title)
+            post.slug = slug
+            post.save()
+            return redirect('story', slug=slug)
+        else:
+            return redirect('newstory1')
+    else:
+        if request.user.is_authenticated:
+            form = New_story_form()
+            return render (request, 'project/newstory1.html', {'form': form})
+        else:
+            return redirect('signup1')
 
 
 
