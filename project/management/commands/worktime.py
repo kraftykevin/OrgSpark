@@ -17,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, **options):
         print("Hello World!")
         sched = BlockingScheduler()
-        @sched.scheduled_job('cron', minute='51')
+        @sched.scheduled_job('cron', minute='00')
         def scheduled_job():
             print("Updating calcvote jobs.")
 
