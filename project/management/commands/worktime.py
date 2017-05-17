@@ -1,9 +1,11 @@
 from django.core.management.base import BaseCommand, CommandError
 import os
 import time
-from project.views import calcvote1, calcvote2, calcvote3, calcvote4
+from project.views import calcvote
+from project.models import Story
 
 from apscheduler.schedulers.blocking import BlockingScheduler
+
 
 
 
@@ -15,11 +17,26 @@ class Command(BaseCommand):
     def handle(self, **options):
         print("Hello World!")
         sched = BlockingScheduler()
-        sched.add_job(calcvote1, 'cron', minute='00')
-        sched.add_job(calcvote2, 'cron', minute='15')
-        sched.add_job(calcvote3, 'cron', minute='30')
-        sched.add_job(calcvote4, 'cron', minute='45')
-        sched.start()
+        @sched.scheduled_job('cron', minute='00')
+        def scheduled_job():
+            print("Updating calcvote jobs.")
 
+            active_stories = Story.objects.filter(finished_story=False)
+
+            for _x in active_stories:
+                sched.add_job(calcvote, 'interval', minutes=_x.minutes_between_votes, args=[_x.pk])
+        sched.start()
         while True:
-            time.sleep(10)
+            time.sleep(15)
+
+
+"""
+Another possiblity could be to define a function that triggers the beginning of voting, a
+and a function that ends it when things.  When a story posts, have the triggering
+function called, and when a story finished is True in calcvote, end the job...
+Then, wouldn't need to crawl through all the stories each time like this which
+is likely ineffecient
+In addition, I worry about calling add job on a story that already has an internval
+of calcvote going, would they conflict, would it go with the new one and kill the old one?
+
+"""
