@@ -205,7 +205,7 @@ def calcvote(pk):
     elif Submission.objects.filter(vote=most_votes.vote).count() > 1:
         calcvote_story.voted.clear()
         return
-    elif most_votes.vote <= calcvote_minimum_votes:
+    elif most_votes.vote < calcvote_minimum_votes:
         calcvote_story.voted.clear()
         return
     else:
