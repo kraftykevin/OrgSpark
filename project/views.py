@@ -219,7 +219,7 @@ def calcvote(pk):
             Story_by_paragraph.objects.create(text=last_entry.text, story=calcvote_story)
             return
         elif last_entry.paragraph == True:
-            Story_by_paragraph.objects.create(text=lastentry.text, story=calcvote_story)
+            Story_by_paragraph.objects.create(text=last_entry.text, story=calcvote_story)
             return
         else:
             last_paragraph.text=str(last_paragraph.text)+"  "+str(last_entry.text)
@@ -231,7 +231,7 @@ def random_vote():
     _x = Submission.objects.order_by('?').first()
     if _x == None:
         return
-    else: 
+    else:
         _x.vote += 1
         _x.save()
         return
