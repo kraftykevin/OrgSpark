@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 import os
 import time
-from project.views import calcvote
+from project.views import calcvote, random_vote
 from project.models import Story
 
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -20,7 +20,7 @@ class Command(BaseCommand):
         @sched.scheduled_job('cron', minute='00')
         def scheduled_job():
             print("Updating calcvote jobs.")
-
+            random_vote()
             active_stories = Story.objects.filter(calcvote_started=False)
 
             for _x in active_stories:

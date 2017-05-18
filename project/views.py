@@ -11,6 +11,11 @@ from django.template.defaultfilters import slugify
 
 
 
+
+
+
+
+
 # home goes to the home page
 def home(request):
     all_stories = Story.objects.order_by('popularity').reverse()
@@ -220,3 +225,13 @@ def calcvote(pk):
             last_paragraph.text=str(last_paragraph.text)+"  "+str(last_entry.text)
             last_paragraph.save()
             return
+
+
+def random_vote():
+    _x = Submission.objects.order_by('?').first()
+    if _x == None:
+        return
+    else: 
+        _x.vote += 1
+        _x.save()
+        return
